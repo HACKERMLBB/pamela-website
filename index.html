@@ -14,7 +14,7 @@
   .btn { display: inline-block; background: white; color: #ff0066; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: 800; margin: 10px; font-size: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); transition: 0.3s; }
   .btn:hover { transform: scale(1.08); }
   .btn-blue { background: #0088cc; color: white; }
-  .section { padding: 30px 15px; max-width: 750px; margin: 0 auto; }
+  .section { padding: 30px 15px; max-width: 850px; margin: 0 auto; }
   .card { background: linear-gradient(145deg, #1f1f2e, #2a2a3e); padding: 25px; border-radius: 25px; margin: 20px auto; text-align: left; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
   .card h2 { font-size: 26px; margin-bottom: 15px; }
   .video-frame { width: 100%; height: 420px; border-radius: 20px; border: 3px solid #ff0066; margin: 15px 0; }
@@ -30,6 +30,18 @@
   .float { animation: float 3s ease-in-out infinite; display: inline-block; }
   @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
   .channel-btn { display: inline-block; background: #ff0000; color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+
+  /* NEW GALLERY STYLES */
+  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+  @media (max-width: 500px) { .gallery { grid-template-columns: 1fr; } }
+  .video-card { background: #151525; border-radius: 20px; overflow: hidden; border: 1px solid #333; text-decoration: none; color: white; display: block; transition: 0.3s; }
+  .video-card:hover { transform: translateY(-5px) scale(1.02); border-color: #ff0066; box-shadow: 0 10px 25px rgba(255,0,102,0.4); }
+  .video-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
+  .video-card .info { padding: 12px; text-align: left; }
+  .video-card .info b { font-size: 14px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .video-card .info p { font-size: 12px; opacity: 0.6; margin-top: 6px; }
+  .play-badge { background: #ff0066; color: white; font-size: 12px; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-top: 8px; }
+  #loading { opacity: 0.7; padding: 20px; }
 </style>
 </head>
 <body>
@@ -49,15 +61,23 @@
   </div>
 
   <div class="section">
-    <!-- FIXED AUTO VIDEOS - Playlist ID UUR4... -->
     <div class="card">
-      <h2>🔥🎬 Latest Videos - AUTO! 🎬🔥</h2>
-      <p style="opacity:0.8;">✨ New Video Drops? It Shows Here Automatically! No Manual Update Needed! ✨</p>
+      <h2>🔥🎬 Latest Video - Play Now! 🎬🔥</h2>
+      <p style="opacity:0.8;">✨ New Video Drops? It Shows Here Automatically! ✨</p>
       <iframe class="video-frame" src="https://www.youtube.com/embed?listType=playlist&list=UUR4MDIWLNe4p_J-RP0dnS5g" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       <div style="text-align:center;">
         <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">▶️ Visit YouTube Channel 🔥</a>
-        <br><br>
-        <p style="font-size:13px; opacity:0.7;">💡 Tip: Click The Playlist Icon Top-Right To See All Videos!</p>
+      </div>
+    </div>
+
+    <!-- NEW BEAUTIFUL GALLERY -->
+    <div class="card">
+      <h2>🎬✨ All Videos - Gallery ✨🎬</h2>
+      <p style="opacity:0.8;">💖 ඔයාගේ Channel එකේ අනික් Video ටිකත් මෙන්න! Click කරලා බලන්න! 👇</p>
+      <div id="loading">⏳ Videos Loading... 🥰</div>
+      <div class="gallery" id="gallery"></div>
+      <div style="text-align:center; margin-top:20px;">
+        <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos" target="_blank">📺 See All Videos On YouTube ✨</a>
       </div>
     </div>
 
@@ -91,6 +111,37 @@
     🥰 Pamela_cullen_bot • 💬 Telegram • 🎬 YouTube • 🚀 2026<br>
     ✨ Stay Cute, Stay Updated! ✨
   </div>
+
+<script>
+async function loadVideos() {
+  try {
+    const rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCR4MDIWLNe4p_J-RP0dnS5g';
+    const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl));
+    const data = await res.json();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(data.contents, "text/xml");
+    const entries = xml.querySelectorAll("entry");
+    const gallery = document.getElementById("gallery");
+    document.getElementById("loading").style.display = "none";
+    entries.forEach(entry => {
+      const title = entry.querySelector("title").textContent;
+      const link = entry.querySelector("link").getAttribute("href");
+      const videoId = link.split("v=")[1];
+      const published = new Date(entry.querySelector("published").textContent).toLocaleDateString();
+      const card = document.createElement("a");
+      card.className = "video-card";
+      card.href = link;
+      card.target = "_blank";
+      card.innerHTML = `<img src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="${title}" loading="lazy"><div class="info"><b>${title}</b><p>📅 ${published} • Pamela cullen</p><span class="play-badge">▶️ Watch Now</span></div>`;
+      gallery.appendChild(card);
+    });
+    if (entries.length === 0) document.getElementById("loading").innerHTML = "No videos found yet! Check YouTube! 🥰";
+  } catch(e) {
+    document.getElementById("loading").innerHTML = "💖 <a href='https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos' target='_blank' style='color:#ff0066;'>Click Here To See All Videos On YouTube! 🎬</a>";
+  }
+}
+loadVideos();
+</script>
 
 </body>
          </html>
