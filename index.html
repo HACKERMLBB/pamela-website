@@ -3,66 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pamela Bot - YouTube Notifier</title>
+<title>Welcome To Pamela's World - YouTube Notifier</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', sans-serif; background: #0a0a1a; color: white; text-align: center; overflow-x: hidden; }
-  .hero { padding: 70px 20px 50px; background: linear-gradient(135deg, #ff0066, #ff4d6d, #833ab4, #0088cc, #00d4ff); background-size: 300% 300%; animation: rainbow 8s ease infinite; border-radius: 0 0 40px 40px; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #050514; color: white; text-align: center; overflow-x: hidden; }
+  #particles, #bubbles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  #bubbles { z-index: 1; }
+  .ticker { background: #ff0066; color: white; padding: 9px 0; font-weight: 800; font-size: 14px; overflow: hidden; white-space: nowrap; position: relative; z-index: 5; box-shadow: 0 5px 20px rgba(255,0,102,0.5); }
+  .ticker span { display: inline-block; animation: marquee 18s linear infinite; }
+  @keyframes marquee { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+  .hero { position: relative; z-index: 2; padding: 30px 20px 55px; background: linear-gradient(135deg, #ff0066, #ff4d6d, #833ab4, #0088cc, #00d4ff, #ff0066, #ffe600); background-size: 500% 500%; animation: rainbow 5s ease infinite; border-radius: 0 0 50px 50px; overflow: hidden; box-shadow: 0 20px 60px rgba(255,0,102,0.5); }
   @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-  .hero h1 { font-size: 48px; line-height: 1.15; text-shadow: 0 5px 20px rgba(0,0,0,0.4); }
-  .hero p { font-size: 19px; margin: 15px auto; max-width: 600px; line-height: 1.7; opacity: 0.95; }
-  .btn { display: inline-block; background: white; color: #ff0066; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: 800; margin: 10px; font-size: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); transition: 0.3s; }
-  .btn:hover { transform: scale(1.08); }
-  .btn-blue { background: #0088cc; color: white; }
-  .section { padding: 30px 15px; max-width: 880px; margin: 0 auto; }
-  .card { background: linear-gradient(145deg, #1f1f2e, #2a2a3e); padding: 25px; border-radius: 25px; margin: 20px auto; text-align: left; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-  .card h2 { font-size: 26px; margin-bottom: 10px; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(55px); opacity: 0.65; animation: orbFloat 5s ease-in-out infinite; }
+  @keyframes orbFloat { 0%,100% { transform: translateY(0) scale(1) rotate(0deg); } 50% { transform: translateY(-28px) scale(1.2) rotate(20deg); } }
+  .hero h1 { font-size: 54px; line-height: 1.05; text-shadow: 0 8px 30px rgba(0,0,0,0.5); position: relative; animation: pop 1s ease; }
+  @keyframes pop { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+  .hero h1 span { background: linear-gradient(90deg, #fff, #ffe600, #fff, #00ffcc, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 300% auto; animation: shine 2.5s linear infinite; }
+  @keyframes shine { to { background-position: 300% center; } }
+  .hero p { font-size: 19px; margin: 18px auto; max-width: 640px; line-height: 1.7; opacity: 0.95; position: relative; }
+  .live-pill { display: inline-flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.35); padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 800; margin: 5px; border: 1px solid rgba(255,255,255,0.3); }
+  .dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 12px #00ff00; animation: blink 1s infinite; }
+  @keyframes blink { 50% { opacity: 0.3; } }
+  .btn { display: inline-block; background: white; color: #ff0066; padding: 18px 36px; border-radius: 50px; text-decoration: none; font-weight: 900; margin: 8px; font-size: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 0 25px rgba(255,255,255,0.5); transition: 0.3s; position: relative; animation: btnGlow 2s infinite; }
+  @keyframes btnGlow { 0%,100% { box-shadow: 0 10px 30px rgba(0,0,0,0.35); } 50% { box-shadow: 0 10px 30px rgba(255,255,255,0.8), 0 0 40px #ff0066; } }
+  .btn:hover { transform: scale(1.1) translateY(-3px) rotate(-1deg); }
+  .btn-blue { background: linear-gradient(135deg, #0088cc, #00d4ff); color: white; }
+  .section { padding: 30px 15px; max-width: 920px; margin: 0 auto; position: relative; z-index: 2; }
+  .card { background: rgba(255,255,255,0.07); backdrop-filter: blur(18px); padding: 26px; border-radius: 30px; margin: 24px auto; text-align: left; border: 2px solid transparent; background-clip: padding-box; position: relative; box-shadow: 0 15px 45px rgba(0,0,0,0.5); overflow: hidden; }
+  .card::before { content: ""; position: absolute; inset: -2px; border-radius: 30px; padding: 2px; background: linear-gradient(45deg, #ff0066, #ffe600, #00d4ff, #ff0066); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: borderSpin 4s linear infinite; background-size: 300% 300%; pointer-events: none; }
+  @keyframes borderSpin { to { background-position: 300% 0; } }
+  .card h2 { font-size: 28px; margin-bottom: 10px; }
   .card .sub { opacity: 0.8; font-size: 15px; margin-bottom: 10px; }
-  .video-frame { width: 100%; height: 420px; border-radius: 20px; border: 3px solid #ff0066; margin: 15px 0; }
-  .feature { display: flex; gap: 12px; align-items: flex-start; margin: 15px 0; background: #151525; padding: 15px; border-radius: 15px; }
-  .feature span { font-size: 28px; }
+  .video-frame { width: 100%; height: 430px; border-radius: 22px; border: 3px solid #ff0066; margin: 15px 0; box-shadow: 0 10px 35px rgba(255,0,102,0.45), 0 0 30px rgba(255,0,102,0.3); }
+  .feature { display: flex; gap: 12px; align-items: flex-start; margin: 14px 0; background: rgba(255,255,255,0.07); padding: 16px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+  .feature:hover { transform: translateX(8px) scale(1.02); background: rgba(255,0,102,0.15); }
+  .feature span { font-size: 32px; animation: wiggle 2s infinite; }
+  @keyframes wiggle { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg) scale(1.15); } }
   .feature b { font-size: 16px; }
   .feature p { font-size: 14px; opacity: 0.8; margin-top: 3px; }
-  .badge { display: inline-block; background: #ff0066; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: bold; margin: 3px; }
+  .badge { display: inline-block; background: #ff0066; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin: 3px; box-shadow: 0 5px 15px rgba(255,0,102,0.5); animation: badgeBounce 2s infinite; }
+  @keyframes badgeBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
   .badge-blue { background: #0088cc; }
   .badge-purple { background: #833ab4; }
   .badge-green { background: #00c853; }
-  .footer { opacity: 0.6; font-size: 13px; padding: 30px; line-height: 1.8; }
-  .float { animation: float 3s ease-in-out infinite; display: inline-block; }
-  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  .channel-btn { display: inline-block; background: #ff0000; color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+  .footer { opacity: 0.75; font-size: 13px; padding: 35px; line-height: 1.9; position: relative; z-index: 2; }
+  .float { animation: float 3s ease-in-out infinite; display: inline-block; font-size: 80px; filter: drop-shadow(0 12px 25px rgba(0,0,0,0.5)); }
+  @keyframes float { 0%,100% { transform: translateY(0) rotate(-4deg) scale(1); } 50% { transform: translateY(-14px) rotate(4deg) scale(1.1); } }
+  .channel-btn { display: inline-block; background: linear-gradient(135deg, #ff0000, #ff4d4d); color: white; padding: 14px 28px; border-radius: 50px; text-decoration: none; font-weight: 800; margin-top: 10px; box-shadow: 0 8px 20px rgba(255,0,0,0.5); }
   .month-block { margin: 28px 0 10px; text-align: left; }
-  .month-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 14px 18px; border-radius: 18px; background: linear-gradient(90deg, #ff0066, #833ab4); }
-  .month-header.blue { background: linear-gradient(90deg, #0088cc, #00d4ff); }
-  .month-header.purple { background: linear-gradient(90deg, #833ab4, #ff4d6d); }
-  .month-header.gray { background: linear-gradient(90deg, #2a2a3e, #444); }
-  .month-header .emoji { font-size: 28px; }
-  .month-header .title { font-size: 20px; font-weight: 800; line-height: 1.2; }
-  .month-header .count { font-size: 13px; opacity: 0.9; font-weight: 400; }
-  .month-header .pill { margin-left: auto; background: rgba(255,255,255,0.25); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; white-space: nowrap; }
-  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .month-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 16px 20px; border-radius: 20px; background: linear-gradient(90deg, #ff0066, #833ab4, #ff0066); background-size: 200% 100%; animation: rainbow 4s infinite; box-shadow: 0 8px 25px rgba(255,0,102,0.4); }
+  .month-header.blue { background: linear-gradient(90deg, #0088cc, #00d4ff, #0088cc); background-size: 200% 100%; }
+  .month-header.purple { background: linear-gradient(90deg, #833ab4, #ff4d6d, #833ab4); background-size: 200% 100%; }
+  .month-header.gray { background: linear-gradient(90deg, #2a2a3e, #555); }
+  .month-header .emoji { font-size: 30px; animation: wiggle 1.5s infinite; }
+  .month-header .title { font-size: 21px; font-weight: 900; line-height: 1.2; }
+  .month-header .count { font-size: 13px; opacity: 0.9; }
+  .month-header .pill { margin-left: auto; background: rgba(255,255,255,0.3); padding: 7px 13px; border-radius: 20px; font-size: 12px; font-weight: 900; white-space: nowrap; }
+  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 500px) { .gallery { grid-template-columns: 1fr; } }
-  .video-card { background: #151525; border-radius: 20px; overflow: hidden; border: 1px solid #333; text-decoration: none; color: white; display: block; transition: 0.3s; position: relative; }
-  .video-card:hover { transform: translateY(-5px) scale(1.02); border-color: #ff0066; box-shadow: 0 10px 25px rgba(255,0,102,0.4); }
-  .video-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
-  .video-card .info { padding: 12px; text-align: left; }
+  .video-card { background: #151525; border-radius: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); text-decoration: none; color: white; display: block; transition: 0.35s; position: relative; }
+  .video-card:hover { transform: translateY(-7px) scale(1.04) rotate(-1deg); border-color: #ff0066; box-shadow: 0 18px 35px rgba(255,0,102,0.55), 0 0 25px rgba(255,0,102,0.4); }
+  .video-card img { width: 100%; height: 190px; object-fit: cover; display: block; }
+  .video-card .info { padding: 13px; text-align: left; }
   .video-card .info b { font-size: 14px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .video-card .info p { font-size: 12px; opacity: 0.6; margin-top: 6px; }
-  .play-badge { background: #ff0066; color: white; font-size: 12px; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-top: 8px; }
-  .date-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.75); padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+  .play-badge { background: #ff0066; color: white; font-size: 12px; padding: 5px 11px; border-radius: 20px; display: inline-block; margin-top: 8px; font-weight: 700; }
+  .date-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.8); padding: 5px 11px; border-radius: 20px; font-size: 11px; font-weight: 800; }
   #loading { opacity: 0.7; padding: 20px; text-align: center; }
   .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 15px 0; }
-  .tab-btn { background: #151525; border: 1px solid #333; color: white; padding: 10px 16px; border-radius: 50px; font-weight: 700; font-size: 14px; cursor: pointer; }
-  .tab-btn.active { background: #ff0066; border-color: #ff0066; }
+  .tab-btn { background: #151525; border: 1px solid #333; color: white; padding: 11px 17px; border-radius: 50px; font-weight: 800; font-size: 14px; cursor: pointer; transition: 0.2s; }
+  .tab-btn.active { background: #ff0066; border-color: #ff0066; box-shadow: 0 5px 18px rgba(255,0,102,0.5); transform: scale(1.05); }
+  .stat-row { display: flex; gap: 10px; margin: 16px 0; }
+  .stat { flex: 1; background: rgba(255,255,255,0.14); border-radius: 18px; padding: 14px 5px; border: 1px solid rgba(255,255,255,0.2); }
+  .stat b { font-size: 20px; display: block; }
+  .stat span { font-size: 11px; opacity: 0.85; }
+  .search-box { width: 100%; padding: 15px 18px; border-radius: 50px; border: 2px solid #ff0066; background: #151525; color: white; font-size: 15px; outline: none; margin: 10px 0; }
+  .search-box::placeholder { color: rgba(255,255,255,0.5); }
+  .notice { background: rgba(255,193,7,0.15); border: 1px solid rgba(255,193,7,0.4); padding: 14px; border-radius: 16px; font-size: 14px; line-height: 1.6; text-align: center; margin-bottom: 15px; }
+  .notice a { color: #ff4d6d; font-weight: 800; }
+  .heart { position: fixed; pointer-events: none; z-index: 999; animation: heartFly 1s ease-out forwards; font-size: 22px; }
+  @keyframes heartFly { to { transform: translateY(-90px) scale(1.6) rotate(20deg); opacity: 0; } }
+  .wave { display: block; width: 100%; margin-top: -5px; }
+  .big-emoji-row { font-size: 32px; letter-spacing: 10px; animation: float 3s infinite; }
 </style>
 </head>
 <body>
+<canvas id="particles"></canvas>
+<canvas id="bubbles"></canvas>
+<div class="ticker"><span>🔥 WELCOME TO PAMELA'S WORLD 🔥 100% FREE BOT 🔥 INSTANT YOUTUBE ALERTS 🔥 JOIN t.me/bigolive_asia 🔥 NEW VIDEOS EVERY DAY 🔥 NEVER MISS A VIDEO 🔥</span></div>
 
   <div class="hero">
-    <div class="float" style="font-size:70px;">🥰</div>
-    <h1 style="font-size:48px; line-height:1.15;">Welcome To<br>Pamela Is Worlds</h1>
-    <p>Your Cute Best Friend For YouTube!<br>New Video = Instant Message!<br>Never Miss A Video Again!</p>
-    <br>
+    <div class="orb" style="width:260px; height:260px; background:#ff0066; top:-50px; left:-50px;"></div>
+    <div class="orb" style="width:220px; height:220px; background:#0088cc; bottom:-40px; right:-30px; animation-delay:1s;"></div>
+    <div class="orb" style="width:160px; height:160px; background:#ffe600; top:35%; right:8%; animation-delay:2s; opacity:0.4;"></div>
+    <div class="orb" style="width:140px; height:140px; background:#00ffcc; top:10%; left:12%; animation-delay:0.5s; opacity:0.35;"></div>
+    <div class="float">🥰</div>
+    <div class="big-emoji-row">💖 ✨ 🌸 💜 ⭐</div>
+    <h1>Welcome To<br><span>Pamela's World</span></h1>
+    <p>Your Cute Best Friend For YouTube!<br>New Video? You Get An Instant Message!<br>Never Miss A Video Again!</p>
+    <div>
+      <span class="live-pill"><span class="dot"></span> LIVE NOW - <span id="clock">00:00:00</span></span>
+      <span class="live-pill">👥 <span id="liveCount">1,247</span> Online Now</span>
+      <span class="live-pill">🔥 <span id="todayCount">38</span> Joined Today</span>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>100% FREE</b><span>No Hidden Charges</span></div>
+      <div class="stat"><b>SUPER FAST</b><span>Instant Alerts</span></div>
+      <div class="stat"><b>24/7 LIVE</b><span>Always Online</span></div>
+    </div>
     <a class="btn btn-blue" href="https://t.me/Pamela_cullen_bot" target="_blank">Add To Telegram</a>
     <a class="btn" href="https://t.me/Pamela_cullen_bot" target="_blank">Start Pamela</a>
     <br><br>
@@ -74,200 +122,193 @@
 
   <div class="section">
     <div class="card">
-      <h2>Latest Video - Play Now!</h2>
-      <p class="sub">New Video Drops? It Shows Here Automatically!</p>
+      <h2>🔥 Latest Video - Play Now!</h2>
+      <p class="sub">A New Video Is Here? It Appears Here Automatically!</p>
       <iframe class="video-frame" src="https://www.youtube.com/embed?listType=playlist&list=UUR4MDIWLNe4p_J-RP0dnS5g" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       <div style="text-align:center;">
-        <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">Visit YouTube Channel</a>
+        <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">▶️ Visit YouTube Channel</a>
       </div>
     </div>
 
     <div class="card">
-      <h2>All Videos By Month</h2>
-      <p class="sub">This Month, Last Month and Earlier - All Separated Beautifully!</p>
-
+      <h2>🎬 All Videos By Month</h2>
+      <p class="sub">This Month, Last Month And Earlier - All Separated Beautifully!</p>
+      <input class="search-box" id="searchBox" placeholder="🔍 Search a video... Type here!">
       <div class="tabs" id="tabs">
         <button class="tab-btn active" data-filter="all">All Videos</button>
         <button class="tab-btn" data-filter="this">This Month</button>
         <button class="tab-btn" data-filter="last">Last Month</button>
         <button class="tab-btn" data-filter="earlier">Earlier</button>
       </div>
-
-      <div id="loading">Videos Loading...</div>
+      <div id="loading">✨ Videos Loading... Please Wait... ✨</div>
+      <div id="notice-box"></div>
       <div id="months"></div>
-
       <div style="text-align:center; margin-top:20px;">
-        <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos" target="_blank">See All Videos On YouTube</a>
+        <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos" target="_blank">📺 See All Videos On YouTube</a>
       </div>
     </div>
 
     <div class="card">
-      <h2>Why Everyone Loves Pamela?</h2>
-      <div class="feature"><span>🔔</span><div><b>Instant Notifications</b><p>New video drops? Pamela tells you in seconds!</p></div></div>
-      <div class="feature"><span>🎬</span><div><b>Track Unlimited Channels</b><p>Add all your fav channels! All in one place!</p></div></div>
-      <div class="feature"><span>👥</span><div><b>Perfect For Groups</b><p>Add Pamela to your group! Everyone gets notified!</p></div></div>
-      <div class="feature"><span>💖</span><div><b>Super Cute & Friendly</b><p>Pamela is not a boring bot! She is your best friend!</p></div></div>
+      <h2>🌟 Why Does Everyone Love Pamela?</h2>
+      <div class="feature"><span>🔔</span><div><b>Instant Notifications</b><p>A new video is uploaded? Pamela tells you in seconds!</p></div></div>
+      <div class="feature"><span>🎬</span><div><b>Track Unlimited Channels</b><p>Add all your favourite channels! Everything in one place!</p></div></div>
+      <div class="feature"><span>👥</span><div><b>Perfect For Groups</b><p>Add Pamela to your group! Everyone gets notified together!</p></div></div>
+      <div class="feature"><span>💖</span><div><b>Super Cute And Friendly</b><p>Pamela is not a boring bot! She is your best friend!</p></div></div>
       <div class="feature"><span>🆓</span><div><b>100% Free Forever</b><p>No money! No ads! Just pure fun!</p></div></div>
+      <div class="feature"><span>⚡</span><div><b>Lightning Fast Speed</b><p>Zero delay! Pamela is faster than everyone!</p></div></div>
     </div>
 
     <div class="card">
-      <h2>How To Use? - Super Easy!</h2>
-      <div class="feature"><span>1️⃣</span><div><b>Click Start Button!</b><p>Tap the blue button above and press START!</p></div></div>
-      <div class="feature"><span>2️⃣</span><div><b>Add To Your Group!</b><p>Add @Pamela_cullen_bot to your Telegram group!</p></div></div>
-      <div class="feature"><span>3️⃣</span><div><b>Add Channel!</b><p>Type <b>/add @ChannelName</b> - Done!</p></div></div>
+      <h2>💡 How To Use? - Super Easy!</h2>
+      <div class="feature"><span>1️⃣</span><div><b>Tap The Start Button!</b><p>Tap the blue button above and press START!</p></div></div>
+      <div class="feature"><span>2️⃣</span><div><b>Add Pamela To Your Group!</b><p>Add @Pamela_cullen_bot to your Telegram group!</p></div></div>
+      <div class="feature"><span>3️⃣</span><div><b>Add A Channel!</b><p>Type <b>/add @ChannelName</b> - Done!</p></div></div>
       <div class="feature"><span>4️⃣</span><div><b>Enjoy!</b><p>Relax! Pamela will ping you for every new video!</p></div></div>
     </div>
 
-    <div class="card" style="text-align:center; background: linear-gradient(135deg, #ff0066, #833ab4);">
-      <h2 style="font-size:28px;">Try Pamela Now!</h2>
-      <p style="margin:10px 0 20px;">Join 100+ Happy Users!</p>
+    <div class="card" style="text-align:center; background: linear-gradient(135deg, #ff0066, #833ab4, #0088cc); background-size: 200% 200%; animation: rainbow 4s infinite;">
+      <h2 style="font-size:30px;">💬 Try Pamela Now!</h2>
+      <p style="margin:10px 0 20px;">Join 100+ Happy Users! Be The Next Star!</p>
       <a class="btn" href="https://t.me/Pamela_cullen_bot" target="_blank">@Pamela_cullen_bot</a>
-      <p style="margin-top:15px; font-size:14px;">Loved By Everyone!</p>
+      <p style="margin-top:15px; font-size:14px;">⭐⭐⭐⭐⭐ Loved By Everyone! ⭐⭐⭐⭐⭐</p>
+      <div class="big-emoji-row" style="font-size:24px; margin-top:10px;">🎉 🥰 🎊 💖 🚀</div>
     </div>
   </div>
 
+  <svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none" style="height:70px;"><path fill="#ff0066" fill-opacity="0.8" d="M0,50 C240,100 480,0 720,50 C960,100 1200,0 1440,50 L1440,100 L0,100 Z"></path></svg>
+
   <div class="footer">
     Made With Love By Pamela Team<br>
-    <a href="https://t.me/bigolive_asia" target="_blank" style="color:#ff0066; text-decoration:none; font-weight:800; font-size:15px;">Join Our Channel - t.me/bigolive_asia</a><br>
+    <a href="https://t.me/bigolive_asia" target="_blank" style="color:#ff0066; text-decoration:none; font-weight:800; font-size:16px;">💖 Join Our Channel - t.me/bigolive_asia 💖</a><br>
     Pamela_cullen_bot - Telegram - YouTube - 2026<br>
-    Stay Cute, Stay Updated!
+    Stay Cute, Stay Updated! ✨
   </div>
 
 <script>
 let allVideos = [];
 let currentFilter = "all";
-
-function monthKey(date) {
-  return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0");
-}
-function monthLabel(date) {
-  return date.toLocaleString("en-US", { month: "long", year: "numeric" });
-}
-
+let searchText = "";
+function monthKey(date) { return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0"); }
+function monthLabel(date) { return date.toLocaleString("en-US", { month: "long", year: "numeric" }); }
 function render() {
   const container = document.getElementById("months");
-  container.innerHTML = "";
-
+  const noticeBox = document.getElementById("notice-box");
+  container.innerHTML = ""; noticeBox.innerHTML = "";
   const now = new Date();
   const thisKey = monthKey(now);
   const lastDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const lastKey = monthKey(lastDate);
-
   const groups = {};
-  allVideos.forEach(v => {
-    const k = monthKey(v.date);
-    if (!groups[k]) groups[k] = [];
-    groups[k].push(v);
-  });
-
+  allVideos.filter(v => v.title.toLowerCase().includes(searchText.toLowerCase())).forEach(v => { const k = monthKey(v.date); if (!groups[k]) groups[k] = []; groups[k].push(v); });
   const sortedKeys = Object.keys(groups).sort().reverse();
-
+  let shownCount = 0;
   sortedKeys.forEach((key, index) => {
     let category = "earlier";
     if (key === thisKey) category = "this";
     else if (key === lastKey) category = "last";
-
     if (currentFilter !== "all" && currentFilter !== category) return;
-
+    shownCount++;
     const videos = groups[key];
     const sampleDate = videos[0].date;
-
-    let headerClass = "gray";
-    let emoji = "📁";
-    let pillText = "EARLIER";
+    let headerClass = "gray"; let emoji = "📁"; let pillText = "EARLIER";
     if (category === "this") { headerClass = ""; emoji = "🔥"; pillText = "THIS MONTH"; }
     if (category === "last") { headerClass = "blue"; emoji = "📅"; pillText = "LAST MONTH"; }
     if (category === "earlier" && index === 2) { headerClass = "purple"; emoji = "✨"; pillText = "EARLIER"; }
-
     const block = document.createElement("div");
     block.className = "month-block";
-    block.innerHTML = `
-      <div class="month-header ${headerClass}">
-        <span class="emoji">${emoji}</span>
-        <div>
-          <div class="title">${monthLabel(sampleDate)}</div>
-          <div class="count">${videos.length} Video${videos.length > 1 ? "s" : ""}</div>
-        </div>
-        <span class="pill">${pillText}</span>
-      </div>
-      <div class="gallery"></div>
-    `;
-
+    block.innerHTML = `<div class="month-header ${headerClass}"><span class="emoji">${emoji}</span><div><div class="title">${monthLabel(sampleDate)}</div><div class="count">${videos.length} Video${videos.length > 1 ? "s" : ""}</div></div><span class="pill">${pillText}</span></div><div class="gallery"></div>`;
     const gallery = block.querySelector(".gallery");
     videos.forEach(v => {
       const card = document.createElement("a");
-      card.className = "video-card";
-      card.href = v.link;
-      card.target = "_blank";
-      card.innerHTML = `
-        <span class="date-badge">${v.date.toLocaleDateString("en-US", { day: "numeric", month: "short" })}</span>
-        <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy">
-        <div class="info"><b>${v.title}</b><p>${v.date.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })} - Pamela cullen</p><span class="play-badge">Watch Now</span></div>
-      `;
+      card.className = "video-card"; card.href = v.link; card.target = "_blank";
+      card.innerHTML = `<span class="date-badge">${v.date.toLocaleDateString("en-US", { day: "numeric", month: "short" })}</span><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy"><div class="info"><b>${v.title}</b><p>${v.date.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })} - Pamela Cullen</p><span class="play-badge">▶️ Watch Now</span></div>`;
       gallery.appendChild(card);
     });
-
     container.appendChild(block);
   });
-
-  if (container.innerHTML === "") {
-    container.innerHTML = "<p style='text-align:center; opacity:0.7; padding:20px;'>No videos found for this filter.</p>";
+  if (shownCount === 0 && searchText === "") {
+    let label = currentFilter === "this" ? "This Month" : currentFilter === "last" ? "Last Month" : "Earlier";
+    noticeBox.innerHTML = `<div class="notice">No videos found in <b>${label}</b> yet.<br>Showing all latest videos below. For older videos, <a href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos" target="_blank">Click Here To View On YouTube</a></div>`;
+    currentFilter = "all";
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.filter === "all"));
+    render(); return;
+  }
+  if (shownCount === 0 && searchText !== "") {
+    container.innerHTML = "<p style='text-align:center; opacity:0.7; padding:20px;'>No video found for your search. Try another word!</p>";
   }
 }
-
 async function loadVideos() {
   const loading = document.getElementById("loading");
   const rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCR4MDIWLNe4p_J-RP0dnS5g';
-
   try {
     const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rssUrl));
     const data = await res.json();
     if (data.items && data.items.length > 0) {
-      allVideos = data.items.map(item => {
-        let videoId = "";
-        try { videoId = new URL(item.link).searchParams.get("v"); } catch(e) {}
-        if (!videoId && item.guid) videoId = item.guid.split(":").pop();
-        return { title: item.title, link: item.link, id: videoId, date: new Date(item.pubDate) };
-      }).sort((a,b) => b.date - a.date);
-      loading.style.display = "none";
-      render();
-      return;
+      allVideos = data.items.map(item => { let videoId = ""; try { videoId = new URL(item.link).searchParams.get("v"); } catch(e) {} if (!videoId && item.guid) videoId = item.guid.split(":").pop(); return { title: item.title, link: item.link, id: videoId, date: new Date(item.pubDate) }; }).sort((a,b) => b.date - a.date);
+      loading.style.display = "none"; render(); return;
     }
   } catch(e) {}
-
   try {
     const res2 = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl));
     const data2 = await res2.json();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data2.contents, "text/xml");
-    const entries = xml.querySelectorAll("entry");
+    const parser = new DOMParser(); const xml = parser.parseFromString(data2.contents, "text/xml"); const entries = xml.querySelectorAll("entry");
     if (entries.length > 0) {
-      allVideos = Array.from(entries).map(entry => {
-        const title = entry.querySelector("title").textContent;
-        const link = entry.querySelector("link").getAttribute("href");
-        const videoId = link.split("v=")[1];
-        return { title, link, id: videoId, date: new Date(entry.querySelector("published").textContent) };
-      }).sort((a,b) => b.date - a.date);
-      loading.style.display = "none";
-      render();
-      return;
+      allVideos = Array.from(entries).map(entry => { const title = entry.querySelector("title").textContent; const link = entry.querySelector("link").getAttribute("href"); const videoId = link.split("v=")[1]; return { title, link, id: videoId, date: new Date(entry.querySelector("published").textContent) }; }).sort((a,b) => b.date - a.date);
+      loading.style.display = "none"; render(); return;
     }
   } catch(e) {}
-
   loading.innerHTML = "<a href='https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos' target='_blank' style='color:#ff0066;'>Click Here To See All Videos On YouTube!</a>";
 }
-
-document.querySelectorAll(".tab-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentFilter = btn.dataset.filter;
-    render();
-  });
-});
-
+document.querySelectorAll(".tab-btn").forEach(btn => { btn.addEventListener("click", () => { document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); currentFilter = btn.dataset.filter; render(); }); });
+document.getElementById("searchBox").addEventListener("input", e => { searchText = e.target.value; render(); });
 loadVideos();
-</script>
 
+// LIVE CLOCK + LIVE COUNT
+function updateClock() { const d = new Date(); document.getElementById("clock").textContent = d.toLocaleTimeString(); }
+setInterval(updateClock, 1000); updateClock();
+setInterval(() => { const el = document.getElementById("liveCount"); let n = 1100 + Math.floor(Math.random()*400); el.textContent = n.toLocaleString(); }, 3000);
+setInterval(() => { const el = document.getElementById("todayCount"); let n = 30 + Math.floor(Math.random()*25); el.textContent = n; }, 5000);
+
+// HEAVY PARTICLES - 120 Particles
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+let W, H, parts = [];
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+window.addEventListener("resize", resize); resize();
+const emojis = ["💖","✨","💜","⭐","🌸","💕","🔥","💎"];
+for (let i=0; i<120; i++) { parts.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, s: 10 + Math.random()*20, speed: 0.3 + Math.random()*1.2, emoji: emojis[Math.floor(Math.random()*emojis.length)], o: 0.25 + Math.random()*0.6, rot: Math.random()*360, spin: (Math.random()-0.5)*2 }); }
+function animate() { ctx.clearRect(0,0,W,H); parts.forEach(p => { p.y -= p.speed; p.x += Math.sin(p.y/50)*0.9; p.rot += p.spin; if (p.y < -30) { p.y = H + 30; p.x = Math.random()*W; } ctx.save(); ctx.globalAlpha = p.o; ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI/180); ctx.font = p.s + "px serif"; ctx.fillText(p.emoji, 0, 0); ctx.restore(); }); ctx.globalAlpha = 1; requestAnimationFrame(animate); }
+animate();
+
+// BUBBLES CANVAS - Extra Heavy
+const bCanvas = document.getElementById("bubbles");
+const bCtx = bCanvas.getContext("2d");
+let bubbles = [];
+function bResize() { bCanvas.width = window.innerWidth; bCanvas.height = window.innerHeight; }
+window.addEventListener("resize", bResize); bResize();
+for (let i=0; i<40; i++) { bubbles.push({ x: Math.random()*window.innerWidth, y: window.innerHeight + Math.random()*500, r: 3 + Math.random()*12, speed: 0.5 + Math.random()*1.5, hue: Math.random()*360 }); }
+function animateBubbles() { bCtx.clearRect(0,0,bCanvas.width,bCanvas.height); bubbles.forEach(b => { b.y -= b.speed; if (b.y < -20) { b.y = bCanvas.height + 20; b.x = Math.random()*bCanvas.width; } bCtx.beginPath(); bCtx.arc(b.x, b.y, b.r, 0, Math.PI*2); bCtx.fillStyle = `hsla(${b.hue}, 100%, 70%, 0.18)`; bCtx.fill(); bCtx.strokeStyle = `hsla(${b.hue}, 100%, 80%, 0.5)`; bCtx.stroke(); }); requestAnimationFrame(animateBubbles); }
+animateBubbles();
+
+// CURSOR HEART TRAIL - Touch Trail
+const hearts = ["💖","💕","✨","🌸","💜"];
+document.addEventListener("touchmove", e => { createHeart(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+document.addEventListener("mousemove", e => { if (Math.random() > 0.6) createHeart(e.clientX, e.clientY); });
+function createHeart(x, y) {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+  h.style.left = x + "px"; h.style.top = y + "px";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 1000);
+}
+
+// CONFETTI ON LOAD
+setTimeout(() => {
+  for (let i=0; i<30; i++) {
+    setTimeout(() => createHeart(Math.random()*window.innerWidth, 100 + Math.random()*300), i*60);
+  }
+}, 800);
+</script>
 </body>
-                                     </html>
+   </html>
