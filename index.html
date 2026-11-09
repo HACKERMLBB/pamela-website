@@ -9,7 +9,7 @@
   body { font-family: 'Segoe UI', sans-serif; background: #0a0a1a; color: white; text-align: center; overflow-x: hidden; }
   .hero { padding: 70px 20px 50px; background: linear-gradient(135deg, #ff0066, #ff4d6d, #833ab4, #0088cc, #00d4ff); background-size: 300% 300%; animation: rainbow 8s ease infinite; border-radius: 0 0 40px 40px; }
   @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-  .hero h1 { font-size: 55px; text-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+  .hero h1 { font-size: 48px; line-height: 1.15; text-shadow: 0 5px 20px rgba(0,0,0,0.4); }
   .hero p { font-size: 19px; margin: 15px auto; max-width: 600px; line-height: 1.7; opacity: 0.95; }
   .btn { display: inline-block; background: white; color: #ff0066; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: 800; margin: 10px; font-size: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); transition: 0.3s; }
   .btn:hover { transform: scale(1.08); }
@@ -27,12 +27,10 @@
   .badge-blue { background: #0088cc; }
   .badge-purple { background: #833ab4; }
   .badge-green { background: #00c853; }
-  .footer { opacity: 0.6; font-size: 13px; padding: 30px; }
+  .footer { opacity: 0.6; font-size: 13px; padding: 30px; line-height: 1.8; }
   .float { animation: float 3s ease-in-out infinite; display: inline-block; }
   @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
   .channel-btn { display: inline-block; background: #ff0000; color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 10px; }
-
-  /* MONTH SECTIONS */
   .month-block { margin: 28px 0 10px; text-align: left; }
   .month-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 14px 18px; border-radius: 18px; background: linear-gradient(90deg, #ff0066, #833ab4); }
   .month-header.blue { background: linear-gradient(90deg, #0088cc, #00d4ff); }
@@ -42,7 +40,6 @@
   .month-header .title { font-size: 20px; font-weight: 800; line-height: 1.2; }
   .month-header .count { font-size: 13px; opacity: 0.9; font-weight: 400; }
   .month-header .pill { margin-left: auto; background: rgba(255,255,255,0.25); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; white-space: nowrap; }
-
   .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
   @media (max-width: 500px) { .gallery { grid-template-columns: 1fr; } }
   .video-card { background: #151525; border-radius: 20px; overflow: hidden; border: 1px solid #333; text-decoration: none; color: white; display: block; transition: 0.3s; position: relative; }
@@ -63,7 +60,7 @@
 
   <div class="hero">
     <div class="float" style="font-size:70px;">🥰</div>
-    <h1>Pamela Bot</h1>
+    <h1 style="font-size:48px; line-height:1.15;">Welcome To<br>Pamela Is Worlds</h1>
     <p>Your Cute Best Friend For YouTube!<br>New Video = Instant Message!<br>Never Miss A Video Again!</p>
     <br>
     <a class="btn btn-blue" href="https://t.me/Pamela_cullen_bot" target="_blank">Add To Telegram</a>
@@ -131,6 +128,7 @@
 
   <div class="footer">
     Made With Love By Pamela Team<br>
+    <a href="https://t.me/bigolive_asia" target="_blank" style="color:#ff0066; text-decoration:none; font-weight:800; font-size:15px;">Join Our Channel - t.me/bigolive_asia</a><br>
     Pamela_cullen_bot - Telegram - YouTube - 2026<br>
     Stay Cute, Stay Updated!
   </div>
@@ -155,7 +153,6 @@ function render() {
   const lastDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const lastKey = monthKey(lastDate);
 
-  // Group by month
   const groups = {};
   allVideos.forEach(v => {
     const k = monthKey(v.date);
@@ -273,4 +270,4 @@ loadVideos();
 </script>
 
 </body>
-   </html>
+                                     </html>
