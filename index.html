@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>✨ Pamela Bot ✨ - YouTube Notifier 💖</title>
+<title>Pamela Bot - YouTube Notifier</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Segoe UI', sans-serif; background: #0a0a1a; color: white; text-align: center; overflow-x: hidden; }
@@ -14,9 +14,10 @@
   .btn { display: inline-block; background: white; color: #ff0066; padding: 16px 32px; border-radius: 50px; text-decoration: none; font-weight: 800; margin: 10px; font-size: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.3); transition: 0.3s; }
   .btn:hover { transform: scale(1.08); }
   .btn-blue { background: #0088cc; color: white; }
-  .section { padding: 30px 15px; max-width: 850px; margin: 0 auto; }
+  .section { padding: 30px 15px; max-width: 880px; margin: 0 auto; }
   .card { background: linear-gradient(145deg, #1f1f2e, #2a2a3e); padding: 25px; border-radius: 25px; margin: 20px auto; text-align: left; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-  .card h2 { font-size: 26px; margin-bottom: 15px; }
+  .card h2 { font-size: 26px; margin-bottom: 10px; }
+  .card .sub { opacity: 0.8; font-size: 15px; margin-bottom: 10px; }
   .video-frame { width: 100%; height: 420px; border-radius: 20px; border: 3px solid #ff0066; margin: 15px 0; }
   .feature { display: flex; gap: 12px; align-items: flex-start; margin: 15px 0; background: #151525; padding: 15px; border-radius: 15px; }
   .feature span { font-size: 28px; }
@@ -31,117 +32,245 @@
   @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
   .channel-btn { display: inline-block; background: #ff0000; color: white; padding: 12px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 10px; }
 
-  /* NEW GALLERY STYLES */
-  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+  /* MONTH SECTIONS */
+  .month-block { margin: 28px 0 10px; text-align: left; }
+  .month-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; padding: 14px 18px; border-radius: 18px; background: linear-gradient(90deg, #ff0066, #833ab4); }
+  .month-header.blue { background: linear-gradient(90deg, #0088cc, #00d4ff); }
+  .month-header.purple { background: linear-gradient(90deg, #833ab4, #ff4d6d); }
+  .month-header.gray { background: linear-gradient(90deg, #2a2a3e, #444); }
+  .month-header .emoji { font-size: 28px; }
+  .month-header .title { font-size: 20px; font-weight: 800; line-height: 1.2; }
+  .month-header .count { font-size: 13px; opacity: 0.9; font-weight: 400; }
+  .month-header .pill { margin-left: auto; background: rgba(255,255,255,0.25); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 800; white-space: nowrap; }
+
+  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
   @media (max-width: 500px) { .gallery { grid-template-columns: 1fr; } }
-  .video-card { background: #151525; border-radius: 20px; overflow: hidden; border: 1px solid #333; text-decoration: none; color: white; display: block; transition: 0.3s; }
+  .video-card { background: #151525; border-radius: 20px; overflow: hidden; border: 1px solid #333; text-decoration: none; color: white; display: block; transition: 0.3s; position: relative; }
   .video-card:hover { transform: translateY(-5px) scale(1.02); border-color: #ff0066; box-shadow: 0 10px 25px rgba(255,0,102,0.4); }
   .video-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
   .video-card .info { padding: 12px; text-align: left; }
   .video-card .info b { font-size: 14px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .video-card .info p { font-size: 12px; opacity: 0.6; margin-top: 6px; }
   .play-badge { background: #ff0066; color: white; font-size: 12px; padding: 4px 10px; border-radius: 20px; display: inline-block; margin-top: 8px; }
-  #loading { opacity: 0.7; padding: 20px; }
+  .date-badge { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.75); padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+  #loading { opacity: 0.7; padding: 20px; text-align: center; }
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 15px 0; }
+  .tab-btn { background: #151525; border: 1px solid #333; color: white; padding: 10px 16px; border-radius: 50px; font-weight: 700; font-size: 14px; cursor: pointer; }
+  .tab-btn.active { background: #ff0066; border-color: #ff0066; }
 </style>
 </head>
 <body>
 
   <div class="hero">
     <div class="float" style="font-size:70px;">🥰</div>
-    <h1>✨ Pamela Bot ✨</h1>
-    <p>💖 Your Cute Best Friend For YouTube! 💖<br>🔔 New Video = Instant Message! ⚡<br>🚀 Never Miss A Video Again! 🎬</p>
+    <h1>Pamela Bot</h1>
+    <p>Your Cute Best Friend For YouTube!<br>New Video = Instant Message!<br>Never Miss A Video Again!</p>
     <br>
-    <a class="btn btn-blue" href="https://t.me/Pamela_cullen_bot" target="_blank">💬 Add To Telegram 🚀</a>
-    <a class="btn" href="https://t.me/Pamela_cullen_bot" target="_blank">✨ Start Pamela ✨</a>
+    <a class="btn btn-blue" href="https://t.me/Pamela_cullen_bot" target="_blank">Add To Telegram</a>
+    <a class="btn" href="https://t.me/Pamela_cullen_bot" target="_blank">Start Pamela</a>
     <br><br>
-    <span class="badge">🔥 100% FREE</span>
-    <span class="badge badge-blue">⚡ SUPER FAST</span>
-    <span class="badge badge-purple">💜 24/7 ONLINE</span>
-    <span class="badge badge-green">✅ AUTO UPDATE</span>
+    <span class="badge">100% FREE</span>
+    <span class="badge badge-blue">SUPER FAST</span>
+    <span class="badge badge-purple">24/7 ONLINE</span>
+    <span class="badge badge-green">AUTO UPDATE</span>
   </div>
 
   <div class="section">
     <div class="card">
-      <h2>🔥🎬 Latest Video - Play Now! 🎬🔥</h2>
-      <p style="opacity:0.8;">✨ New Video Drops? It Shows Here Automatically! ✨</p>
+      <h2>Latest Video - Play Now!</h2>
+      <p class="sub">New Video Drops? It Shows Here Automatically!</p>
       <iframe class="video-frame" src="https://www.youtube.com/embed?listType=playlist&list=UUR4MDIWLNe4p_J-RP0dnS5g" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
       <div style="text-align:center;">
-        <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">▶️ Visit YouTube Channel 🔥</a>
+        <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">Visit YouTube Channel</a>
       </div>
     </div>
 
-    <!-- NEW BEAUTIFUL GALLERY -->
     <div class="card">
-      <h2>🎬✨ All Videos - Gallery ✨🎬</h2>
-      <p style="opacity:0.8;">💖 ඔයාගේ Channel එකේ අනික් Video ටිකත් මෙන්න! Click කරලා බලන්න! 👇</p>
-      <div id="loading">⏳ Videos Loading... 🥰</div>
-      <div class="gallery" id="gallery"></div>
+      <h2>All Videos By Month</h2>
+      <p class="sub">This Month, Last Month and Earlier - All Separated Beautifully!</p>
+
+      <div class="tabs" id="tabs">
+        <button class="tab-btn active" data-filter="all">All Videos</button>
+        <button class="tab-btn" data-filter="this">This Month</button>
+        <button class="tab-btn" data-filter="last">Last Month</button>
+        <button class="tab-btn" data-filter="earlier">Earlier</button>
+      </div>
+
+      <div id="loading">Videos Loading...</div>
+      <div id="months"></div>
+
       <div style="text-align:center; margin-top:20px;">
-        <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos" target="_blank">📺 See All Videos On YouTube ✨</a>
+        <a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos" target="_blank">See All Videos On YouTube</a>
       </div>
     </div>
 
     <div class="card">
-      <h2>🌟 Why Everyone Loves Pamela? 🥰</h2>
-      <div class="feature"><span>🔔</span><div><b>Instant Notifications ⚡</b><p>New video drops? Pamela tells you in seconds!</p></div></div>
-      <div class="feature"><span>🎬</span><div><b>Track Unlimited Channels 📺</b><p>Add all your fav channels! All in one place!</p></div></div>
-      <div class="feature"><span>👥</span><div><b>Perfect For Groups 💬</b><p>Add Pamela to your group! Everyone gets notified!</p></div></div>
-      <div class="feature"><span>💖</span><div><b>Super Cute & Friendly 🥰</b><p>Pamela is not a boring bot! She is your best friend!</p></div></div>
-      <div class="feature"><span>🆓</span><div><b>100% Free Forever 🎉</b><p>No money! No ads! Just pure fun!</p></div></div>
+      <h2>Why Everyone Loves Pamela?</h2>
+      <div class="feature"><span>🔔</span><div><b>Instant Notifications</b><p>New video drops? Pamela tells you in seconds!</p></div></div>
+      <div class="feature"><span>🎬</span><div><b>Track Unlimited Channels</b><p>Add all your fav channels! All in one place!</p></div></div>
+      <div class="feature"><span>👥</span><div><b>Perfect For Groups</b><p>Add Pamela to your group! Everyone gets notified!</p></div></div>
+      <div class="feature"><span>💖</span><div><b>Super Cute & Friendly</b><p>Pamela is not a boring bot! She is your best friend!</p></div></div>
+      <div class="feature"><span>🆓</span><div><b>100% Free Forever</b><p>No money! No ads! Just pure fun!</p></div></div>
     </div>
 
     <div class="card">
-      <h2>🤔💡 How To Use? - Super Easy! ✨</h2>
-      <div class="feature"><span>1️⃣</span><div><b>Click Start Button! 🚀</b><p>Tap the blue button above and press START!</p></div></div>
-      <div class="feature"><span>2️⃣</span><div><b>Add To Your Group! 👥</b><p>Add @Pamela_cullen_bot to your Telegram group!</p></div></div>
-      <div class="feature"><span>3️⃣</span><div><b>Add Channel! 📺</b><p>Type <b>/add @ChannelName</b> - Done!</p></div></div>
-      <div class="feature"><span>4️⃣</span><div><b>Enjoy! 🎉🥰</b><p>Relax! Pamela will ping you for every new video!</p></div></div>
+      <h2>How To Use? - Super Easy!</h2>
+      <div class="feature"><span>1️⃣</span><div><b>Click Start Button!</b><p>Tap the blue button above and press START!</p></div></div>
+      <div class="feature"><span>2️⃣</span><div><b>Add To Your Group!</b><p>Add @Pamela_cullen_bot to your Telegram group!</p></div></div>
+      <div class="feature"><span>3️⃣</span><div><b>Add Channel!</b><p>Type <b>/add @ChannelName</b> - Done!</p></div></div>
+      <div class="feature"><span>4️⃣</span><div><b>Enjoy!</b><p>Relax! Pamela will ping you for every new video!</p></div></div>
     </div>
 
     <div class="card" style="text-align:center; background: linear-gradient(135deg, #ff0066, #833ab4);">
-      <h2 style="font-size:28px;">💬 Try Pamela Now! 💖</h2>
-      <p style="margin:10px 0 20px;">Join 100+ Happy Users! 🎉✨</p>
-      <a class="btn" href="https://t.me/Pamela_cullen_bot" target="_blank">👉 @Pamela_cullen_bot 👈</a>
-      <p style="margin-top:15px; font-size:14px;">⭐⭐⭐⭐⭐ Loved By Everyone! ⭐⭐⭐⭐⭐</p>
+      <h2 style="font-size:28px;">Try Pamela Now!</h2>
+      <p style="margin:10px 0 20px;">Join 100+ Happy Users!</p>
+      <a class="btn" href="https://t.me/Pamela_cullen_bot" target="_blank">@Pamela_cullen_bot</a>
+      <p style="margin-top:15px; font-size:14px;">Loved By Everyone!</p>
     </div>
   </div>
 
   <div class="footer">
-    Made With 💖 By Pamela Team ✨<br>
-    🥰 Pamela_cullen_bot • 💬 Telegram • 🎬 YouTube • 🚀 2026<br>
-    ✨ Stay Cute, Stay Updated! ✨
+    Made With Love By Pamela Team<br>
+    Pamela_cullen_bot - Telegram - YouTube - 2026<br>
+    Stay Cute, Stay Updated!
   </div>
 
 <script>
-async function loadVideos() {
-  try {
-    const rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCR4MDIWLNe4p_J-RP0dnS5g';
-    const res = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl));
-    const data = await res.json();
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data.contents, "text/xml");
-    const entries = xml.querySelectorAll("entry");
-    const gallery = document.getElementById("gallery");
-    document.getElementById("loading").style.display = "none";
-    entries.forEach(entry => {
-      const title = entry.querySelector("title").textContent;
-      const link = entry.querySelector("link").getAttribute("href");
-      const videoId = link.split("v=")[1];
-      const published = new Date(entry.querySelector("published").textContent).toLocaleDateString();
+let allVideos = [];
+let currentFilter = "all";
+
+function monthKey(date) {
+  return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0");
+}
+function monthLabel(date) {
+  return date.toLocaleString("en-US", { month: "long", year: "numeric" });
+}
+
+function render() {
+  const container = document.getElementById("months");
+  container.innerHTML = "";
+
+  const now = new Date();
+  const thisKey = monthKey(now);
+  const lastDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lastKey = monthKey(lastDate);
+
+  // Group by month
+  const groups = {};
+  allVideos.forEach(v => {
+    const k = monthKey(v.date);
+    if (!groups[k]) groups[k] = [];
+    groups[k].push(v);
+  });
+
+  const sortedKeys = Object.keys(groups).sort().reverse();
+
+  sortedKeys.forEach((key, index) => {
+    let category = "earlier";
+    if (key === thisKey) category = "this";
+    else if (key === lastKey) category = "last";
+
+    if (currentFilter !== "all" && currentFilter !== category) return;
+
+    const videos = groups[key];
+    const sampleDate = videos[0].date;
+
+    let headerClass = "gray";
+    let emoji = "📁";
+    let pillText = "EARLIER";
+    if (category === "this") { headerClass = ""; emoji = "🔥"; pillText = "THIS MONTH"; }
+    if (category === "last") { headerClass = "blue"; emoji = "📅"; pillText = "LAST MONTH"; }
+    if (category === "earlier" && index === 2) { headerClass = "purple"; emoji = "✨"; pillText = "EARLIER"; }
+
+    const block = document.createElement("div");
+    block.className = "month-block";
+    block.innerHTML = `
+      <div class="month-header ${headerClass}">
+        <span class="emoji">${emoji}</span>
+        <div>
+          <div class="title">${monthLabel(sampleDate)}</div>
+          <div class="count">${videos.length} Video${videos.length > 1 ? "s" : ""}</div>
+        </div>
+        <span class="pill">${pillText}</span>
+      </div>
+      <div class="gallery"></div>
+    `;
+
+    const gallery = block.querySelector(".gallery");
+    videos.forEach(v => {
       const card = document.createElement("a");
       card.className = "video-card";
-      card.href = link;
+      card.href = v.link;
       card.target = "_blank";
-      card.innerHTML = `<img src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="${title}" loading="lazy"><div class="info"><b>${title}</b><p>📅 ${published} • Pamela cullen</p><span class="play-badge">▶️ Watch Now</span></div>`;
+      card.innerHTML = `
+        <span class="date-badge">${v.date.toLocaleDateString("en-US", { day: "numeric", month: "short" })}</span>
+        <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy">
+        <div class="info"><b>${v.title}</b><p>${v.date.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })} - Pamela cullen</p><span class="play-badge">Watch Now</span></div>
+      `;
       gallery.appendChild(card);
     });
-    if (entries.length === 0) document.getElementById("loading").innerHTML = "No videos found yet! Check YouTube! 🥰";
-  } catch(e) {
-    document.getElementById("loading").innerHTML = "💖 <a href='https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos' target='_blank' style='color:#ff0066;'>Click Here To See All Videos On YouTube! 🎬</a>";
+
+    container.appendChild(block);
+  });
+
+  if (container.innerHTML === "") {
+    container.innerHTML = "<p style='text-align:center; opacity:0.7; padding:20px;'>No videos found for this filter.</p>";
   }
 }
+
+async function loadVideos() {
+  const loading = document.getElementById("loading");
+  const rssUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCR4MDIWLNe4p_J-RP0dnS5g';
+
+  try {
+    const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rssUrl));
+    const data = await res.json();
+    if (data.items && data.items.length > 0) {
+      allVideos = data.items.map(item => {
+        let videoId = "";
+        try { videoId = new URL(item.link).searchParams.get("v"); } catch(e) {}
+        if (!videoId && item.guid) videoId = item.guid.split(":").pop();
+        return { title: item.title, link: item.link, id: videoId, date: new Date(item.pubDate) };
+      }).sort((a,b) => b.date - a.date);
+      loading.style.display = "none";
+      render();
+      return;
+    }
+  } catch(e) {}
+
+  try {
+    const res2 = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl));
+    const data2 = await res2.json();
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(data2.contents, "text/xml");
+    const entries = xml.querySelectorAll("entry");
+    if (entries.length > 0) {
+      allVideos = Array.from(entries).map(entry => {
+        const title = entry.querySelector("title").textContent;
+        const link = entry.querySelector("link").getAttribute("href");
+        const videoId = link.split("v=")[1];
+        return { title, link, id: videoId, date: new Date(entry.querySelector("published").textContent) };
+      }).sort((a,b) => b.date - a.date);
+      loading.style.display = "none";
+      render();
+      return;
+    }
+  } catch(e) {}
+
+  loading.innerHTML = "<a href='https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos' target='_blank' style='color:#ff0066;'>Click Here To See All Videos On YouTube!</a>";
+}
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
+    render();
+  });
+});
+
 loadVideos();
 </script>
 
 </body>
-         </html>
+   </html>
