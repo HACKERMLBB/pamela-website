@@ -3,34 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Welcome To Pamela's World - YouTube Notifier</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Welcome To Pamela's World V3 - YouTube Notifier</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Segoe UI', system-ui, sans-serif; background: #050514; color: white; text-align: center; overflow-x: hidden; }
   #particles, #bubbles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
   #bubbles { z-index: 1; }
-  .ticker { background: #ff0066; color: white; padding: 9px 0; font-weight: 800; font-size: 14px; overflow: hidden; white-space: nowrap; position: relative; z-index: 5; box-shadow: 0 5px 20px rgba(255,0,102,0.5); }
-  .ticker span { display: inline-block; animation: marquee 18s linear infinite; }
+  .ticker { background: linear-gradient(90deg, #ff0066, #ffcc00, #00d4ff, #ff0066); background-size: 300% 100%; animation: rainbow 4s infinite; color: white; padding: 10px 0; font-weight: 900; font-size: 14px; overflow: hidden; white-space: nowrap; position: relative; z-index: 5; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  .ticker span { display: inline-block; animation: marquee 16s linear infinite; }
   @keyframes marquee { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
-  .hero { position: relative; z-index: 2; padding: 30px 20px 55px; background: linear-gradient(135deg, #ff0066, #ff4d6d, #833ab4, #0088cc, #00d4ff, #ff0066, #ffe600); background-size: 500% 500%; animation: rainbow 5s ease infinite; border-radius: 0 0 50px 50px; overflow: hidden; box-shadow: 0 20px 60px rgba(255,0,102,0.5); }
+  .hero { position: relative; z-index: 2; padding: 28px 20px 55px; background: linear-gradient(135deg, #ff0066, #ff4d6d, #833ab4, #0088cc, #00d4ff, #ff0066, #ffe600); background-size: 500% 500%; animation: rainbow 5s ease infinite; border-radius: 0 0 50px 50px; overflow: hidden; box-shadow: 0 20px 60px rgba(255,0,102,0.5); }
   @keyframes rainbow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
   .orb { position: absolute; border-radius: 50%; filter: blur(55px); opacity: 0.65; animation: orbFloat 5s ease-in-out infinite; }
   @keyframes orbFloat { 0%,100% { transform: translateY(0) scale(1) rotate(0deg); } 50% { transform: translateY(-28px) scale(1.2) rotate(20deg); } }
-  .hero h1 { font-size: 54px; line-height: 1.05; text-shadow: 0 8px 30px rgba(0,0,0,0.5); position: relative; animation: pop 1s ease; }
-  @keyframes pop { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-  .hero h1 span { background: linear-gradient(90deg, #fff, #ffe600, #fff, #00ffcc, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 300% auto; animation: shine 2.5s linear infinite; }
+  .hero h1 { font-size: 56px; line-height: 1.05; text-shadow: 0 8px 30px rgba(0,0,0,0.5); position: relative; animation: pop 0.8s ease; }
+  @keyframes pop { 0% { transform: scale(0.6) rotate(-3deg); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+  .hero h1 span { background: linear-gradient(90deg, #fff, #ffe600, #fff, #00ffcc, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-size: 300% auto; animation: shine 2s linear infinite; }
   @keyframes shine { to { background-position: 300% center; } }
-  .hero p { font-size: 19px; margin: 18px auto; max-width: 640px; line-height: 1.7; opacity: 0.95; position: relative; }
-  .live-pill { display: inline-flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.35); padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 800; margin: 5px; border: 1px solid rgba(255,255,255,0.3); }
-  .dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 12px #00ff00; animation: blink 1s infinite; }
+  .hero p { font-size: 19px; margin: 16px auto; max-width: 640px; line-height: 1.7; opacity: 0.95; position: relative; }
+  .live-pill { display: inline-flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.4); padding: 9px 17px; border-radius: 50px; font-size: 13px; font-weight: 800; margin: 4px; border: 1px solid rgba(255,255,255,0.35); }
+  .dot { width: 10px; height: 10px; background: #00ff00; border-radius: 50%; box-shadow: 0 0 14px #00ff00; animation: blink 1s infinite; }
   @keyframes blink { 50% { opacity: 0.3; } }
   .btn { display: inline-block; background: white; color: #ff0066; padding: 18px 36px; border-radius: 50px; text-decoration: none; font-weight: 900; margin: 8px; font-size: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 0 25px rgba(255,255,255,0.5); transition: 0.3s; position: relative; animation: btnGlow 2s infinite; }
-  @keyframes btnGlow { 0%,100% { box-shadow: 0 10px 30px rgba(0,0,0,0.35); } 50% { box-shadow: 0 10px 30px rgba(255,255,255,0.8), 0 0 40px #ff0066; } }
+  @keyframes btnGlow { 0%,100% { box-shadow: 0 10px 30px rgba(0,0,0,0.35); } 50% { box-shadow: 0 10px 30px rgba(255,255,255,0.9), 0 0 45px #ff0066; } }
   .btn:hover { transform: scale(1.1) translateY(-3px) rotate(-1deg); }
   .btn-blue { background: linear-gradient(135deg, #0088cc, #00d4ff); color: white; }
   .section { padding: 30px 15px; max-width: 920px; margin: 0 auto; position: relative; z-index: 2; }
-  .card { background: rgba(255,255,255,0.07); backdrop-filter: blur(18px); padding: 26px; border-radius: 30px; margin: 24px auto; text-align: left; border: 2px solid transparent; background-clip: padding-box; position: relative; box-shadow: 0 15px 45px rgba(0,0,0,0.5); overflow: hidden; }
-  .card::before { content: ""; position: absolute; inset: -2px; border-radius: 30px; padding: 2px; background: linear-gradient(45deg, #ff0066, #ffe600, #00d4ff, #ff0066); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: borderSpin 4s linear infinite; background-size: 300% 300%; pointer-events: none; }
+  .card { background: rgba(255,255,255,0.07); backdrop-filter: blur(18px); padding: 26px; border-radius: 30px; margin: 24px auto; text-align: left; border: 2px solid transparent; position: relative; box-shadow: 0 15px 45px rgba(0,0,0,0.5); overflow: hidden; }
+  .card::before { content: ""; position: absolute; inset: -2px; border-radius: 30px; padding: 2px; background: linear-gradient(45deg, #ff0066, #ffe600, #00d4ff, #ff0066); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: borderSpin 3s linear infinite; background-size: 300% 300%; pointer-events: none; }
   @keyframes borderSpin { to { background-position: 300% 0; } }
   .card h2 { font-size: 28px; margin-bottom: 10px; }
   .card .sub { opacity: 0.8; font-size: 15px; margin-bottom: 10px; }
@@ -46,6 +49,7 @@
   .badge-blue { background: #0088cc; }
   .badge-purple { background: #833ab4; }
   .badge-green { background: #00c853; }
+  .badge-gold { background: #ffaa00; color: #000; }
   .footer { opacity: 0.75; font-size: 13px; padding: 35px; line-height: 1.9; position: relative; z-index: 2; }
   .float { animation: float 3s ease-in-out infinite; display: inline-block; font-size: 80px; filter: drop-shadow(0 12px 25px rgba(0,0,0,0.5)); }
   @keyframes float { 0%,100% { transform: translateY(0) rotate(-4deg) scale(1); } 50% { transform: translateY(-14px) rotate(4deg) scale(1.1); } }
@@ -85,12 +89,28 @@
   @keyframes heartFly { to { transform: translateY(-90px) scale(1.6) rotate(20deg); opacity: 0; } }
   .wave { display: block; width: 100%; margin-top: -5px; }
   .big-emoji-row { font-size: 32px; letter-spacing: 10px; animation: float 3s infinite; }
+  .countdown-box { display: flex; gap: 10px; justify-content: center; margin: 15px 0; }
+  .cd { background: rgba(0,0,0,0.35); border-radius: 16px; padding: 12px 8px; min-width: 68px; border: 1px solid rgba(255,255,255,0.25); }
+  .cd b { font-size: 26px; display: block; }
+  .cd span { font-size: 11px; opacity: 0.85; }
+  .wheel-wrap { text-align: center; margin: 15px 0; }
+  .wheel { width: 180px; height: 180px; border-radius: 50%; margin: 0 auto; background: conic-gradient(#ff0066 0 60deg, #ffe600 60deg 120deg, #00d4ff 120deg 180deg, #833ab4 180deg 240deg, #00c853 240deg 300deg, #ff4d6d 300deg 360deg); border: 6px solid white; display: flex; align-items: center; justify-content: center; font-size: 40px; transition: transform 3s cubic-bezier(0.1, 0.8, 0.1, 1); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+  .spin-btn { background: #ffe600; color: #000; border: none; padding: 12px 28px; border-radius: 50px; font-weight: 900; font-size: 16px; margin-top: 14px; cursor: pointer; box-shadow: 0 8px 20px rgba(255,230,0,0.5); }
+  .fan { background: rgba(255,255,255,0.07); padding: 14px; border-radius: 16px; margin: 10px 0; text-align: left; border-left: 4px solid #ff0066; }
+  .fan b { font-size: 14px; }
+  .fan p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+  .fan .stars { color: #ffe600; font-size: 13px; }
+  .faq { background: rgba(255,255,255,0.07); border-radius: 16px; margin: 10px 0; overflow: hidden; }
+  .faq-q { padding: 15px; font-weight: 800; cursor: pointer; display: flex; justify-content: space-between; text-align: left; }
+  .faq-a { padding: 0 15px 15px; font-size: 14px; opacity: 0.85; text-align: left; display: none; line-height: 1.6; }
+  .faq.open .faq-a { display: block; }
+  .version-badge { background: #ffe600; color: #000; padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 900; }
 </style>
 </head>
 <body>
 <canvas id="particles"></canvas>
 <canvas id="bubbles"></canvas>
-<div class="ticker"><span>🔥 WELCOME TO PAMELA'S WORLD 🔥 100% FREE BOT 🔥 INSTANT YOUTUBE ALERTS 🔥 JOIN t.me/bigolive_asia 🔥 NEW VIDEOS EVERY DAY 🔥 NEVER MISS A VIDEO 🔥</span></div>
+<div class="ticker"><span>🔥 WELCOME TO PAMELA'S WORLD V3 🔥 NEW ULTRA DESIGN 🔥 100% FREE BOT 🔥 INSTANT YOUTUBE ALERTS 🔥 JOIN t.me/bigolive_asia 🔥 SPIN & WIN 🔥 NEVER MISS A VIDEO 🔥</span></div>
 
   <div class="hero">
     <div class="orb" style="width:260px; height:260px; background:#ff0066; top:-50px; left:-50px;"></div>
@@ -101,11 +121,18 @@
     <div class="big-emoji-row">💖 ✨ 🌸 💜 ⭐</div>
     <h1>Welcome To<br><span>Pamela's World</span></h1>
     <p>Your Cute Best Friend For YouTube!<br>New Video? You Get An Instant Message!<br>Never Miss A Video Again!</p>
+    <div><span class="version-badge">✨ NEW V3 ULTRA DESIGN ✨</span></div><br>
     <div>
       <span class="live-pill"><span class="dot"></span> LIVE NOW - <span id="clock">00:00:00</span></span>
       <span class="live-pill">👥 <span id="liveCount">1,247</span> Online Now</span>
       <span class="live-pill">🔥 <span id="todayCount">38</span> Joined Today</span>
     </div>
+    <div class="countdown-box">
+      <div class="cd"><b id="cdH">05</b><span>HOURS</span></div>
+      <div class="cd"><b id="cdM">24</b><span>MINUTES</span></div>
+      <div class="cd"><b id="cdS">59</b><span>SECONDS</span></div>
+    </div>
+    <p style="font-size:13px; opacity:0.85;">⏳ Next Video Drops In...</p>
     <div class="stat-row">
       <div class="stat"><b>100% FREE</b><span>No Hidden Charges</span></div>
       <div class="stat"><b>SUPER FAST</b><span>Instant Alerts</span></div>
@@ -118,9 +145,20 @@
     <span class="badge badge-blue">SUPER FAST</span>
     <span class="badge badge-purple">24/7 ONLINE</span>
     <span class="badge badge-green">AUTO UPDATE</span>
+    <span class="badge badge-gold">⭐ V3 NEW</span>
   </div>
 
   <div class="section">
+    <div class="card">
+      <h2>🎡 Spin Wheel - Try Your Luck!</h2>
+      <p class="sub">Tap SPIN! What will you get today?</p>
+      <div class="wheel-wrap">
+        <div class="wheel" id="wheel">🎁</div>
+        <button class="spin-btn" onclick="spinWheel()">🎡 SPIN NOW!</button>
+        <p id="wheelResult" style="margin-top:12px; font-weight:800; font-size:15px;"></p>
+      </div>
+    </div>
+
     <div class="card">
       <h2>🔥 Latest Video - Play Now!</h2>
       <p class="sub">A New Video Is Here? It Appears Here Automatically!</p>
@@ -149,6 +187,14 @@
     </div>
 
     <div class="card">
+      <h2>🏆 Top Fans Wall</h2>
+      <p class="sub">Our Lovely Fans Love Pamela!</p>
+      <div class="fan"><b>🥇 @BigLiveLover</b> <span class="stars">⭐⭐⭐⭐⭐</span><p>"Pamela is the best bot ever! I never miss a video now!"</p></div>
+      <div class="fan"><b>🥈 @AsiaQueen</b> <span class="stars">⭐⭐⭐⭐⭐</span><p>"Super fast! Video comes and Pamela pings me instantly!"</p></div>
+      <div class="fan"><b>🥉 @PamelaFan99</b> <span class="stars">⭐⭐⭐⭐⭐</span><p>"Cute, friendly and 100% free! I added her to my group!"</p></div>
+    </div>
+
+    <div class="card">
       <h2>🌟 Why Does Everyone Love Pamela?</h2>
       <div class="feature"><span>🔔</span><div><b>Instant Notifications</b><p>A new video is uploaded? Pamela tells you in seconds!</p></div></div>
       <div class="feature"><span>🎬</span><div><b>Track Unlimited Channels</b><p>Add all your favourite channels! Everything in one place!</p></div></div>
@@ -166,6 +212,14 @@
       <div class="feature"><span>4️⃣</span><div><b>Enjoy!</b><p>Relax! Pamela will ping you for every new video!</p></div></div>
     </div>
 
+    <div class="card">
+      <h2>❓ Frequently Asked Questions</h2>
+      <div class="faq" onclick="this.classList.toggle('open')"><div class="faq-q"><span>Is Pamela really free?</span><span>+</span></div><div class="faq-a">Yes! 100% Free Forever. No hidden charges, no premium, no ads!</div></div>
+      <div class="faq" onclick="this.classList.toggle('open')"><div class="faq-q"><span>How fast is the notification?</span><span>+</span></div><div class="faq-a">Super fast! Within seconds after a new video is uploaded, you get a message!</div></div>
+      <div class="faq" onclick="this.classList.toggle('open')"><div class="faq-q"><span>Can I add Pamela to my group?</span><span>+</span></div><div class="faq-a">Yes! Add @Pamela_cullen_bot to any group and type /add @ChannelName. Done!</div></div>
+      <div class="faq" onclick="this.classList.toggle('open')"><div class="faq-q"><span>How many channels can I track?</span><span>+</span></div><div class="faq-a">Unlimited! Add as many channels as you want!</div></div>
+    </div>
+
     <div class="card" style="text-align:center; background: linear-gradient(135deg, #ff0066, #833ab4, #0088cc); background-size: 200% 200%; animation: rainbow 4s infinite;">
       <h2 style="font-size:30px;">💬 Try Pamela Now!</h2>
       <p style="margin:10px 0 20px;">Join 100+ Happy Users! Be The Next Star!</p>
@@ -178,7 +232,7 @@
   <svg class="wave" viewBox="0 0 1440 100" preserveAspectRatio="none" style="height:70px;"><path fill="#ff0066" fill-opacity="0.8" d="M0,50 C240,100 480,0 720,50 C960,100 1200,0 1440,50 L1440,100 L0,100 Z"></path></svg>
 
   <div class="footer">
-    Made With Love By Pamela Team<br>
+    Made With Love By Pamela Team - V3 ULTRA<br>
     <a href="https://t.me/bigolive_asia" target="_blank" style="color:#ff0066; text-decoration:none; font-weight:800; font-size:16px;">💖 Join Our Channel - t.me/bigolive_asia 💖</a><br>
     Pamela_cullen_bot - Telegram - YouTube - 2026<br>
     Stay Cute, Stay Updated! ✨
@@ -233,9 +287,7 @@ function render() {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.filter === "all"));
     render(); return;
   }
-  if (shownCount === 0 && searchText !== "") {
-    container.innerHTML = "<p style='text-align:center; opacity:0.7; padding:20px;'>No video found for your search. Try another word!</p>";
-  }
+  if (shownCount === 0 && searchText !== "") { container.innerHTML = "<p style='text-align:center; opacity:0.7; padding:20px;'>No video found for your search. Try another word!</p>"; }
 }
 async function loadVideos() {
   const loading = document.getElementById("loading");
@@ -262,53 +314,41 @@ async function loadVideos() {
 document.querySelectorAll(".tab-btn").forEach(btn => { btn.addEventListener("click", () => { document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); currentFilter = btn.dataset.filter; render(); }); });
 document.getElementById("searchBox").addEventListener("input", e => { searchText = e.target.value; render(); });
 loadVideos();
-
-// LIVE CLOCK + LIVE COUNT
 function updateClock() { const d = new Date(); document.getElementById("clock").textContent = d.toLocaleTimeString(); }
 setInterval(updateClock, 1000); updateClock();
-setInterval(() => { const el = document.getElementById("liveCount"); let n = 1100 + Math.floor(Math.random()*400); el.textContent = n.toLocaleString(); }, 3000);
-setInterval(() => { const el = document.getElementById("todayCount"); let n = 30 + Math.floor(Math.random()*25); el.textContent = n; }, 5000);
-
-// HEAVY PARTICLES - 120 Particles
+setInterval(() => { document.getElementById("liveCount").textContent = (1100 + Math.floor(Math.random()*400)).toLocaleString(); }, 3000);
+setInterval(() => { document.getElementById("todayCount").textContent = 30 + Math.floor(Math.random()*25); }, 5000);
+let cdTotal = 5*3600 + 24*60 + 59;
+setInterval(() => { cdTotal--; if (cdTotal < 0) cdTotal = 6*3600; const h = Math.floor(cdTotal/3600); const m = Math.floor((cdTotal%3600)/60); const s = cdTotal%60; document.getElementById("cdH").textContent = String(h).padStart(2,"0"); document.getElementById("cdM").textContent = String(m).padStart(2,"0"); document.getElementById("cdS").textContent = String(s).padStart(2,"0"); }, 1000);
+let wheelDeg = 0;
+function spinWheel() {
+  wheelDeg += 1440 + Math.floor(Math.random()*720);
+  document.getElementById("wheel").style.transform = `rotate(${wheelDeg}deg)`;
+  const prizes = ["🎉 YOU WIN - 100 LOVE POINTS!", "💖 PAMELA LOVES YOU!", "⭐ YOU ARE A SUPER FAN!", "🔥 JACKPOT - JOIN t.me/bigolive_asia!", "🌸 YOU ARE SO CUTE!"];
+  setTimeout(() => { document.getElementById("wheelResult").textContent = prizes[Math.floor(Math.random()*prizes.length)]; for (let i=0;i<15;i++) setTimeout(()=>createHeart(Math.random()*window.innerWidth, 200+Math.random()*400), i*80); }, 3000);
+}
 const canvas = document.getElementById("particles");
 const ctx = canvas.getContext("2d");
 let W, H, parts = [];
 function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
 window.addEventListener("resize", resize); resize();
-const emojis = ["💖","✨","💜","⭐","🌸","💕","🔥","💎"];
-for (let i=0; i<120; i++) { parts.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, s: 10 + Math.random()*20, speed: 0.3 + Math.random()*1.2, emoji: emojis[Math.floor(Math.random()*emojis.length)], o: 0.25 + Math.random()*0.6, rot: Math.random()*360, spin: (Math.random()-0.5)*2 }); }
-function animate() { ctx.clearRect(0,0,W,H); parts.forEach(p => { p.y -= p.speed; p.x += Math.sin(p.y/50)*0.9; p.rot += p.spin; if (p.y < -30) { p.y = H + 30; p.x = Math.random()*W; } ctx.save(); ctx.globalAlpha = p.o; ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI/180); ctx.font = p.s + "px serif"; ctx.fillText(p.emoji, 0, 0); ctx.restore(); }); ctx.globalAlpha = 1; requestAnimationFrame(animate); }
+const emojis = ["💖","✨","💜","⭐","🌸","💕","🔥","💎","🦋","🌈"];
+for (let i=0; i<140; i++) { parts.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, s: 10 + Math.random()*22, speed: 0.3 + Math.random()*1.4, emoji: emojis[Math.floor(Math.random()*emojis.length)], o: 0.25 + Math.random()*0.6, rot: Math.random()*360, spin: (Math.random()-0.5)*3 }); }
+function animate() { ctx.clearRect(0,0,W,H); parts.forEach(p => { p.y -= p.speed; p.x += Math.sin(p.y/50)*1; p.rot += p.spin; if (p.y < -30) { p.y = H + 30; p.x = Math.random()*W; } ctx.save(); ctx.globalAlpha = p.o; ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI/180); ctx.font = p.s + "px serif"; ctx.fillText(p.emoji, 0, 0); ctx.restore(); }); ctx.globalAlpha = 1; requestAnimationFrame(animate); }
 animate();
-
-// BUBBLES CANVAS - Extra Heavy
 const bCanvas = document.getElementById("bubbles");
 const bCtx = bCanvas.getContext("2d");
 let bubbles = [];
 function bResize() { bCanvas.width = window.innerWidth; bCanvas.height = window.innerHeight; }
 window.addEventListener("resize", bResize); bResize();
-for (let i=0; i<40; i++) { bubbles.push({ x: Math.random()*window.innerWidth, y: window.innerHeight + Math.random()*500, r: 3 + Math.random()*12, speed: 0.5 + Math.random()*1.5, hue: Math.random()*360 }); }
-function animateBubbles() { bCtx.clearRect(0,0,bCanvas.width,bCanvas.height); bubbles.forEach(b => { b.y -= b.speed; if (b.y < -20) { b.y = bCanvas.height + 20; b.x = Math.random()*bCanvas.width; } bCtx.beginPath(); bCtx.arc(b.x, b.y, b.r, 0, Math.PI*2); bCtx.fillStyle = `hsla(${b.hue}, 100%, 70%, 0.18)`; bCtx.fill(); bCtx.strokeStyle = `hsla(${b.hue}, 100%, 80%, 0.5)`; bCtx.stroke(); }); requestAnimationFrame(animateBubbles); }
+for (let i=0; i<50; i++) { bubbles.push({ x: Math.random()*window.innerWidth, y: window.innerHeight + Math.random()*500, r: 3 + Math.random()*14, speed: 0.5 + Math.random()*1.8, hue: Math.random()*360 }); }
+function animateBubbles() { bCtx.clearRect(0,0,bCanvas.width,bCanvas.height); bubbles.forEach(b => { b.y -= b.speed; if (b.y < -20) { b.y = bCanvas.height + 20; b.x = Math.random()*bCanvas.width; } bCtx.beginPath(); bCtx.arc(b.x, b.y, b.r, 0, Math.PI*2); bCtx.fillStyle = `hsla(${b.hue}, 100%, 70%, 0.2)`; bCtx.fill(); bCtx.strokeStyle = `hsla(${b.hue}, 100%, 80%, 0.55)`; bCtx.stroke(); }); requestAnimationFrame(animateBubbles); }
 animateBubbles();
-
-// CURSOR HEART TRAIL - Touch Trail
-const hearts = ["💖","💕","✨","🌸","💜"];
+const hearts = ["💖","💕","✨","🌸","💜","🦋"];
 document.addEventListener("touchmove", e => { createHeart(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
 document.addEventListener("mousemove", e => { if (Math.random() > 0.6) createHeart(e.clientX, e.clientY); });
-function createHeart(x, y) {
-  const h = document.createElement("div");
-  h.className = "heart";
-  h.textContent = hearts[Math.floor(Math.random()*hearts.length)];
-  h.style.left = x + "px"; h.style.top = y + "px";
-  document.body.appendChild(h);
-  setTimeout(() => h.remove(), 1000);
-}
-
-// CONFETTI ON LOAD
-setTimeout(() => {
-  for (let i=0; i<30; i++) {
-    setTimeout(() => createHeart(Math.random()*window.innerWidth, 100 + Math.random()*300), i*60);
-  }
-}, 800);
+function createHeart(x, y) { const h = document.createElement("div"); h.className = "heart"; h.textContent = hearts[Math.floor(Math.random()*hearts.length)]; h.style.left = x + "px"; h.style.top = y + "px"; document.body.appendChild(h); setTimeout(() => h.remove(), 1000); }
+setTimeout(() => { for (let i=0; i<35; i++) { setTimeout(() => createHeart(Math.random()*window.innerWidth, 100 + Math.random()*300), i*50); } }, 800);
 </script>
 </body>
    </html>
