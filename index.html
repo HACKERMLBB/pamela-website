@@ -107,6 +107,7 @@
   .channel-btn { display: inline-block; background: linear-gradient(135deg,#FF0066,#FF9500); color: #fff; padding: 11px 22px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 13px; margin-top: 8px; }
   #loading { color: #9A8A8A; padding: 14px; }
   .notice { background: #FFF3D6; padding: 11px; border-radius: 12px; font-size: 13px; text-align: center; margin-bottom: 10px; color: #6B5A5A; }
+  .refresh-btn { background: linear-gradient(135deg,#FF0066,#FF9500); color: #fff; border: none; padding: 9px 18px; border-radius: 20px; font-weight: 800; font-size: 13px; cursor: pointer; margin: 8px 0; font-family: inherit; }
 </style>
 </head>
 <body>
@@ -187,6 +188,7 @@
     <p class="sub">Browse by month — calm, clean and easy to find.</p>
     <input class="search-box" id="searchBox" placeholder="Search a video... 🌸">
     <div class="tabs"><button class="tab-btn active" data-filter="all">All</button><button class="tab-btn" data-filter="this">This Month</button><button class="tab-btn" data-filter="last">Last Month</button><button class="tab-btn" data-filter="earlier">Earlier</button></div>
+    <div style="text-align:center;"><button class="refresh-btn" onclick="loadVideos(true)">🔄 Refresh Videos</button><span id="lastUpdated" style="font-size:12px; color:#9A8A8A; display:block; margin-bottom:6px;"></span></div>
     <div id="loading">Loading videos...</div>
     <div id="notice-box"></div>
     <div id="months"></div>
@@ -259,14 +261,57 @@ function render(){
   if(shown===0 && searchText===""){ noticeBox.innerHTML=`<div class="notice">No videos in <b>${currentFilter}</b> yet. <a href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos" target="_blank">View on YouTube</a></div>`; currentFilter="all"; document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b.dataset.filter==="all")); render(); return; }
   if(shown===0 && searchText!==""){ container.innerHTML="<p style='text-align:center; color:#9A8A8A; padding:14px;'>No video found.</p>"; }
 }
-async function loadVideos(){
-  const loading=document.getElementById("loading"); const rssUrl='https://www.youtube.com/feeds/videos.xml?channel_id=UCR4MDIWLNe4p_J-RP0dnS5g';
-  try{ const res=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rssUrl)); const data=await res.json(); if(data.items && data.items.length>0){ allVideos=data.items.map(item=>{ let id=""; try{ id=new URL(item.link).searchParams.get("v"); }catch(e){} if(!id && item.guid) id=item.guid.split(":").pop(); return {title:item.title, link:item.link, id, date:new Date(item.pubDate)}; }).sort((a,b)=>b.date-a.date); loading.style.display="none"; render(); return; } }catch(e){}
-  loading.innerHTML="<a href='https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos' target='_blank' style='color:#FF0066;'>Click here to see all videos on YouTube</a>";
+
+// ===== 🔥 FIXED: loadVideos - 3 Ways + Cache Bust + Auto Refresh =====
+const CHANNEL_ID_FIXED = "UCR4MDIWLNe4p_J-RP0dnS5g";
+async function loadVideos(isManual=false){
+  const loading=document.getElementById("loading");
+  const lastEl=document.getElementById("lastUpdated");
+  if(isManual){ loading.style.display="block"; loading.textContent="Refreshing... 🌸"; }
+  const cacheBust = Date.now();
+  const rssUrl='https://www.youtube.com/feeds/videos.xml?channel_id='+CHANNEL_ID_FIXED;
+
+  // WAY 1: rss2json with cache bust
+  try{
+    const res=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rssUrl)+'&_='+cacheBust);
+    const data=await res.json();
+    if(data.items && data.items.length>0){
+      allVideos=data.items.map(item=>{ let id=""; try{ id=new URL(item.link).searchParams.get("v"); }catch(e){} if(!id && item.guid) id=item.guid.split(":").pop(); return {title:item.title, link:item.link, id, date:new Date(item.pubDate)}; }).sort((a,b)=>b.date-a.date);
+      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅";
+      render(); return;
+    }
+  }catch(e){ console.log("rss2json failed", e); }
+
+  // WAY 2: Invidious - yewtu.be
+  try{
+    const res2=await fetch('https://yewtu.be/api/v1/channels/'+CHANNEL_ID_FIXED+'/videos');
+    const data2=await res2.json();
+    if(data2 && data2.length>0){
+      allVideos=data2.map(item=>{ return {title:item.title, link:'https://www.youtube.com/watch?v='+item.videoId, id:item.videoId, date:new Date(item.published*1000)}; }).sort((a,b)=>b.date-a.date);
+      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Backup)";
+      render(); return;
+    }
+  }catch(e){ console.log("invidious yewtu failed", e); }
+
+  // WAY 3: Invidious - second instance
+  try{
+    const res3=await fetch('https://inv.us.projectsegfau.lt/api/v1/channels/'+CHANNEL_ID_FIXED+'/videos');
+    const data3=await res3.json();
+    if(data3 && data3.length>0){
+      allVideos=data3.map(item=>{ return {title:item.title, link:'https://www.youtube.com/watch?v='+item.videoId, id:item.videoId, date:new Date(item.published*1000)}; }).sort((a,b)=>b.date-a.date);
+      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Backup 2)";
+      render(); return;
+    }
+  }catch(e){ console.log("invidious 2 failed", e); }
+
+  loading.innerHTML="<a href='https://www.youtube.com/channel/"+CHANNEL_ID_FIXED+"/videos' target='_blank' style='color:#FF0066;'>Click here to see all videos on YouTube</a>";
 }
 document.querySelectorAll(".tab-btn").forEach(btn=>{ btn.addEventListener("click",()=>{ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); currentFilter=btn.dataset.filter; render(); }); });
 document.getElementById("searchBox").addEventListener("input", e=>{ searchText=e.target.value; render(); });
 setTimeout(loadVideos, 500);
+// Auto refresh every 2 minutes - new video auto appears without reload!
+setInterval(loadVideos, 120000);
+
 function setVibe(v, btn){
   document.querySelectorAll(".vibe-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active");
   const msgs={ morning:["🌅 Good Morning!","Have a beautiful day, lovely friend!"], afternoon:["☀️ Good Afternoon!","Hope your day is sunny and sweet!"], evening:["🌇 Good Evening!","Relax, take a deep breath, you did great!"], night:["🌙 Good Night!","Sleep tight, sweet dreams from Pamela!"] };
@@ -282,7 +327,6 @@ setInterval(()=>{ document.getElementById("liveCount").textContent=(1500+Math.fl
 setInterval(()=>{ document.getElementById("todayCount").textContent=40+Math.floor(Math.random()*60); },10000);
 
 // ===== NEXT VIDEO COUNTDOWN - REAL TIME =====
-// CHANGE THIS IF YOUR UPLOAD TIME IS DIFFERENT: 18 = 6:00 PM, 12 = 12:00 PM, 20 = 8:00 PM
 const NEXT_UPLOAD_HOUR = 18;
 const NEXT_UPLOAD_MINUTE = 0;
 function getNextUploadTime(){
@@ -324,4 +368,4 @@ function animFx(t){ if(t-last>80){ last=t; ctxFx.clearRect(0,0,W,H); parts.forEa
 requestAnimationFrame(animFx);
 </script>
 </body>
-                                                                                                           </html>
+     </html>
