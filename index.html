@@ -58,6 +58,11 @@
   .card h2 { font-family: 'Playfair Display', serif; font-size: 25px; color: #3E2A3A; margin-bottom: 5px; }
   .card .sub { color: #8A7A7A; font-size: 14px; margin-bottom: 10px; }
   .video-frame { width: 100%; height: 380px; border-radius: 18px; border: 3px solid #FFE0EB; margin: 10px 0; background: #000; }
+  .latest-thumb-wrap { display:block; position:relative; margin:10px 0; border-radius:18px; overflow:hidden; border:3px solid #FFE0EB; background:#000; }
+  .latest-thumb-wrap img { width:100%; height:380px; object-fit:cover; display:block; }
+  .latest-play { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(255,0,102,0.92); color:#fff; width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:32px; box-shadow:0 8px 20px rgba(0,0,0,0.35); }
+  .latest-date { position:absolute; top:10px; left:10px; background:rgba(255,255,255,0.95); padding:5px 10px; border-radius:20px; font-size:11px; font-weight:800; color:#3E2A3A; }
+  @media (max-width:500px){ .latest-thumb-wrap img{ height:260px; } }
   .search-box { width: 100%; padding: 12px 16px; border-radius: 30px; border: 2px solid #FFE0EB; background: #FFF5F8; color: #3E2A3A; font-size: 15px; outline: none; margin: 10px 0; font-family: inherit; }
   .search-box:focus { border-color: #FF0066; background: #fff; }
   .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
@@ -180,13 +185,21 @@
       <div class="sign">— With all my love, Pamela 🌸 Queen of Pamela's World</div>
     </div>
   </div>
+
+  <!-- 🔥 FIXED LATEST VIDEO - NO IFRAME, NO TV! Thumbnail + Play Button -->
   <div class="card">
     <h2>Latest Video</h2>
     <p class="sub">Fresh from the channel — just bloomed for you in Pamela's World.</p>
     <div id="latestTitle">Loading latest video... 🌸</div>
-    <iframe id="latestFrame" class="video-frame" src="" loading="lazy" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-    <div style="text-align:center;"><a id="latestLink" class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">Visit Channel →</a></div>
+    <a id="latestThumbLink" class="latest-thumb-wrap" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">
+      <span class="latest-date" id="latestDate">✨ NEW</span>
+      <img id="latestThumb" src="" alt="Latest Video">
+      <span class="latest-play">▶️</span>
+    </a>
+    <div style="text-align:center;"><a id="latestLink" class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">▶️ Watch on YouTube →</a></div>
+    <p style="text-align:center; font-size:12px; color:#9A8A8A; margin-top:6px;">Tap the photo to watch! Shorts play perfectly on YouTube 💖</p>
   </div>
+
   <div class="card">
     <h2>All Videos</h2>
     <p class="sub">Browse by month — calm, clean and easy to find.</p>
@@ -241,21 +254,33 @@
 
 <script>
 let allVideos=[]; let currentFilter="all"; let searchText="";
+// 👇 අලුත් Video එකක් ආවම RSS එකට වැටෙන්න කලින් පෙන්නන්න ඕනේ නම්, මෙතන ID + Title දාන්න!
+// උදා: https://www.youtube.com/watch?v=ABC123 නම් ID = ABC123
+// හිස්ව තිබ්බොත් Auto විදියට ගන්නවා
+const MANUAL_LATEST_ID = "";
+const MANUAL_LATEST_TITLE = "";
+
 function monthKey(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
 function monthLabel(d){ return d.toLocaleString("en-US",{month:"long", year:"numeric"}); }
 
 function render(){
-  // 🔥 FIX 1: Latest Video එකට අලුත්ම Video එක දානවා - TV ටික නැති වෙන්න
+  // 🔥 FIX: Latest Video - Thumbnail විදියට, iframe නෑ, TV නෑ! Short වලටත් වැඩ!
   if(allVideos.length>0){
-    const latest = allVideos[0];
-    const frame = document.getElementById("latestFrame");
+    let latest = allVideos[0];
+    // Manual override තියෙනවා නම් ඒක උඩටම දාන්න
+    if(MANUAL_LATEST_ID){
+      latest = { id: MANUAL_LATEST_ID, title: MANUAL_LATEST_TITLE || latest.title, link: "https://www.youtube.com/watch?v=" + MANUAL_LATEST_ID, date: new Date() };
+    }
     const titleEl = document.getElementById("latestTitle");
     if(titleEl) titleEl.textContent = "🎬 " + latest.title;
-    if(frame && !frame.src.includes(latest.id)){
-      frame.src = "https://www.youtube.com/embed/" + latest.id + "?rel=0";
-    }
+    const thumb = document.getElementById("latestThumb");
+    if(thumb) thumb.src = "https://i.ytimg.com/vi/" + latest.id + "/hqdefault.jpg";
+    const thumbLink = document.getElementById("latestThumbLink");
+    if(thumbLink) thumbLink.href = latest.link;
     const link = document.getElementById("latestLink");
     if(link) link.href = latest.link;
+    const dateEl = document.getElementById("latestDate");
+    if(dateEl && latest.date) dateEl.textContent = "✨ " + new Date(latest.date).toLocaleDateString("en-US",{day:"numeric", month:"short"});
   }
   const container=document.getElementById("months"); const noticeBox=document.getElementById("notice-box");
   container.innerHTML=""; noticeBox.innerHTML="";
@@ -279,7 +304,6 @@ function render(){
   if(shown===0 && searchText!==""){ container.innerHTML="<p style='text-align:center; color:#9A8A8A; padding:14px;'>No video found.</p>"; }
 }
 
-// ===== 🔥 FIXED: loadVideos - 4 Ways =====
 const CHANNEL_ID_FIXED = "UCR4MDIWLNe4p_J-RP0dnS5g";
 function parseRSSXML(xmlText){
   const parser = new DOMParser();
@@ -303,18 +327,7 @@ async function loadVideos(isManual=false){
   const cacheBust = Date.now();
   const rssUrl='https://www.youtube.com/feeds/videos.xml?channel_id='+CHANNEL_ID_FIXED;
 
-  // WAY 1: rss2json with cache bust
-  try{
-    const res=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rssUrl)+'&_='+cacheBust);
-    const data=await res.json();
-    if(data.items && data.items.length>0){
-      allVideos=data.items.map(item=>{ let id=""; try{ id=new URL(item.link).searchParams.get("v"); }catch(e){} if(!id && item.guid) id=item.guid.split(":").pop(); return {title:item.title, link:item.link, id, date:new Date(item.pubDate)}; }).sort((a,b)=>b.date-a.date);
-      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅";
-      render(); return;
-    }
-  }catch(e){ console.log("rss2json failed", e); }
-
-  // WAY 2: Direct RSS via allorigins - No Limit! This is the NEW main way!
+  // WAY 1: allorigins Direct RSS - දැන් මේක තමයි Main! rss2json පරණ Data දෙන නිසා!
   try{
     const res2 = await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(rssUrl)+'&_='+cacheBust);
     const txt = await res2.text();
@@ -326,6 +339,17 @@ async function loadVideos(isManual=false){
       }
     }
   }catch(e){ console.log("allorigins failed", e); }
+
+  // WAY 2: rss2json - Backup
+  try{
+    const res=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rssUrl)+'&_='+cacheBust);
+    const data=await res.json();
+    if(data.items && data.items.length>0){
+      allVideos=data.items.map(item=>{ let id=""; try{ id=new URL(item.link).searchParams.get("v"); }catch(e){} if(!id && item.guid) id=item.guid.split(":").pop(); return {title:item.title, link:item.link, id, date:new Date(item.pubDate)}; }).sort((a,b)=>b.date-a.date);
+      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅";
+      render(); return;
+    }
+  }catch(e){ console.log("rss2json failed", e); }
 
   // WAY 3: Invidious
   try{
@@ -411,4 +435,4 @@ function animFx(t){ if(t-last>80){ last=t; ctxFx.clearRect(0,0,W,H); parts.forEa
 requestAnimationFrame(animFx);
 </script>
 </body>
-     </html>
+   </html>
