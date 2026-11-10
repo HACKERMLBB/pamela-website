@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Pamela's World - Beautiful</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Quicksand:wght@500;700;900&display=swap" rel="stylesheet">
@@ -108,6 +110,7 @@
   #loading { color: #9A8A8A; padding: 14px; }
   .notice { background: #FFF3D6; padding: 11px; border-radius: 12px; font-size: 13px; text-align: center; margin-bottom: 10px; color: #6B5A5A; }
   .refresh-btn { background: linear-gradient(135deg,#FF0066,#FF9500); color: #fff; border: none; padding: 9px 18px; border-radius: 20px; font-weight: 800; font-size: 13px; cursor: pointer; margin: 8px 0; font-family: inherit; }
+  #latestTitle { font-size: 15px; font-weight: 800; color: #3E2A3A; margin-top: 8px; text-align: center; }
 </style>
 </head>
 <body>
@@ -180,8 +183,9 @@
   <div class="card">
     <h2>Latest Video</h2>
     <p class="sub">Fresh from the channel — just bloomed for you in Pamela's World.</p>
-    <iframe class="video-frame" src="https://www.youtube.com/embed?listType=playlist&list=UUR4MDIWLNe4p_J-RP0dnS5g" loading="lazy" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-    <div style="text-align:center;"><a class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">Visit Channel →</a></div>
+    <div id="latestTitle">Loading latest video... 🌸</div>
+    <iframe id="latestFrame" class="video-frame" src="" loading="lazy" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    <div style="text-align:center;"><a id="latestLink" class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">Visit Channel →</a></div>
   </div>
   <div class="card">
     <h2>All Videos</h2>
@@ -239,7 +243,20 @@
 let allVideos=[]; let currentFilter="all"; let searchText="";
 function monthKey(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
 function monthLabel(d){ return d.toLocaleString("en-US",{month:"long", year:"numeric"}); }
+
 function render(){
+  // 🔥 FIX 1: Latest Video එකට අලුත්ම Video එක දානවා - TV ටික නැති වෙන්න
+  if(allVideos.length>0){
+    const latest = allVideos[0];
+    const frame = document.getElementById("latestFrame");
+    const titleEl = document.getElementById("latestTitle");
+    if(titleEl) titleEl.textContent = "🎬 " + latest.title;
+    if(frame && !frame.src.includes(latest.id)){
+      frame.src = "https://www.youtube.com/embed/" + latest.id + "?rel=0";
+    }
+    const link = document.getElementById("latestLink");
+    if(link) link.href = latest.link;
+  }
   const container=document.getElementById("months"); const noticeBox=document.getElementById("notice-box");
   container.innerHTML=""; noticeBox.innerHTML="";
   const now=new Date(); const thisKey=monthKey(now); const lastDate=new Date(now.getFullYear(), now.getMonth()-1, 1); const lastKey=monthKey(lastDate);
@@ -262,8 +279,23 @@ function render(){
   if(shown===0 && searchText!==""){ container.innerHTML="<p style='text-align:center; color:#9A8A8A; padding:14px;'>No video found.</p>"; }
 }
 
-// ===== 🔥 FIXED: loadVideos - 3 Ways + Cache Bust + Auto Refresh =====
+// ===== 🔥 FIXED: loadVideos - 4 Ways =====
 const CHANNEL_ID_FIXED = "UCR4MDIWLNe4p_J-RP0dnS5g";
+function parseRSSXML(xmlText){
+  const parser = new DOMParser();
+  const xml = parser.parseFromString(xmlText, "text/xml");
+  const entries = xml.querySelectorAll("entry");
+  const out = [];
+  entries.forEach(e=>{
+    const title = e.querySelector("title")?.textContent || "";
+    const link = e.querySelector("link")?.getAttribute("href") || "";
+    const pub = e.querySelector("published")?.textContent || "";
+    const idEl = e.querySelector("id")?.textContent || "";
+    const vid = idEl.split(":").pop();
+    if(vid) out.push({title, link: link || "https://www.youtube.com/watch?v="+vid, id: vid, date: new Date(pub)});
+  });
+  return out.sort((a,b)=>b.date-a.date);
+}
 async function loadVideos(isManual=false){
   const loading=document.getElementById("loading");
   const lastEl=document.getElementById("lastUpdated");
@@ -282,23 +314,36 @@ async function loadVideos(isManual=false){
     }
   }catch(e){ console.log("rss2json failed", e); }
 
-  // WAY 2: Invidious - yewtu.be
+  // WAY 2: Direct RSS via allorigins - No Limit! This is the NEW main way!
   try{
-    const res2=await fetch('https://yewtu.be/api/v1/channels/'+CHANNEL_ID_FIXED+'/videos');
-    const data2=await res2.json();
-    if(data2 && data2.length>0){
-      allVideos=data2.map(item=>{ return {title:item.title, link:'https://www.youtube.com/watch?v='+item.videoId, id:item.videoId, date:new Date(item.published*1000)}; }).sort((a,b)=>b.date-a.date);
-      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Backup)";
-      render(); return;
+    const res2 = await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(rssUrl)+'&_='+cacheBust);
+    const txt = await res2.text();
+    if(txt && txt.includes("<entry")){
+      allVideos = parseRSSXML(txt);
+      if(allVideos.length>0){
+        loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Direct)";
+        render(); return;
+      }
     }
-  }catch(e){ console.log("invidious yewtu failed", e); }
+  }catch(e){ console.log("allorigins failed", e); }
 
-  // WAY 3: Invidious - second instance
+  // WAY 3: Invidious
   try{
-    const res3=await fetch('https://inv.us.projectsegfau.lt/api/v1/channels/'+CHANNEL_ID_FIXED+'/videos');
+    const res3=await fetch('https://yewtu.be/api/v1/channels/'+CHANNEL_ID_FIXED+'/videos');
     const data3=await res3.json();
     if(data3 && data3.length>0){
       allVideos=data3.map(item=>{ return {title:item.title, link:'https://www.youtube.com/watch?v='+item.videoId, id:item.videoId, date:new Date(item.published*1000)}; }).sort((a,b)=>b.date-a.date);
+      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Backup)";
+      render(); return;
+    }
+  }catch(e){ console.log("invidious failed", e); }
+
+  // WAY 4: Second Invidious
+  try{
+    const res4=await fetch('https://inv.us.projectsegfau.lt/api/v1/channels/'+CHANNEL_ID_FIXED+'/videos');
+    const data4=await res4.json();
+    if(data4 && data4.length>0){
+      allVideos=data4.map(item=>{ return {title:item.title, link:'https://www.youtube.com/watch?v='+item.videoId, id:item.videoId, date:new Date(item.published*1000)}; }).sort((a,b)=>b.date-a.date);
       loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Backup 2)";
       render(); return;
     }
@@ -309,7 +354,6 @@ async function loadVideos(isManual=false){
 document.querySelectorAll(".tab-btn").forEach(btn=>{ btn.addEventListener("click",()=>{ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); currentFilter=btn.dataset.filter; render(); }); });
 document.getElementById("searchBox").addEventListener("input", e=>{ searchText=e.target.value; render(); });
 setTimeout(loadVideos, 500);
-// Auto refresh every 2 minutes - new video auto appears without reload!
 setInterval(loadVideos, 120000);
 
 function setVibe(v, btn){
@@ -326,7 +370,6 @@ setInterval(()=>{ document.getElementById("clock").textContent=new Date().toLoca
 setInterval(()=>{ document.getElementById("liveCount").textContent=(1500+Math.floor(Math.random()*800)).toLocaleString(); },8000);
 setInterval(()=>{ document.getElementById("todayCount").textContent=40+Math.floor(Math.random()*60); },10000);
 
-// ===== NEXT VIDEO COUNTDOWN - REAL TIME =====
 const NEXT_UPLOAD_HOUR = 18;
 const NEXT_UPLOAD_MINUTE = 0;
 function getNextUploadTime(){
