@@ -121,9 +121,7 @@
 <body>
 <canvas id="fx"></canvas>
 <div class="ticker"><span>💖 PAMELA'S WORLD - NEXT VIDEO COMING SOON 💖 COUNTDOWN IS LIVE 💖 PAMELA WILL TELL YOU FIRST 💖 JOIN t.me/bigolive_asia 💖</span></div>
-
 <div class="topbar"><div class="logo">Pamela's World 💖</div><a href="https://t.me/Pamela_cullen_bot" target="_blank">Start Bot →</a></div>
-
 <div class="hero">
   <div class="hero-emoji-row">💖 ✨ 🌸 💜 ⭐ 💎 🌈</div>
   <p style="font-size:12px; letter-spacing:3px; color:#fff; font-weight:800; position:relative; z-index:2;">✦ WELCOME TO PAMELA'S WORLD ✦</p>
@@ -136,7 +134,6 @@
     <b>Once again, welcome to Pamela's World. You are so loved here. Thank you for coming!</b> 🌸💖🍃🦋🌈
   </div>
   <div class="greeting-box" id="greetingBox">🌅 <b>Good Morning!</b> <span>Have a beautiful day, lovely friend!</span></div>
-
   <div class="countdown-wrap">
     <div class="cd-title">🎬 NEXT NEW VIDEO ON YOUTUBE CHANNEL DROPS IN...</div>
     <div class="cd-sub" id="cdDateText">Next upload: Today at 6:00 PM - Pamela's World Channel</div>
@@ -149,7 +146,6 @@
     <div style="font-size:12px; color:#6B5A5A; margin-top:8px; font-weight:700;" id="cdFooter">🔔 Pamela will tell you the second the new video is out on YouTube!</div>
     <div style="margin-top:10px;"><a href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank" style="display:inline-block; background:#1A1025; color:#fff; padding:10px 20px; border-radius:30px; text-decoration:none; font-weight:800; font-size:13px;">▶️ Check YouTube Channel Now</a></div>
   </div>
-
   <div class="pill-row"><span class="pill">🍃 100% Free Forever</span><span class="pill">🌸 Instant Alerts</span><span class="pill">🦋 Soft & Natural</span><span class="pill">💖 Super Cute</span></div>
   <div><a class="btn btn-white" href="https://t.me/Pamela_cullen_bot" target="_blank">Start Pamela 🌿</a><a class="btn btn-dark" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">Watch on YouTube</a></div>
   <div><button class="vibe-btn active" onclick="setVibe('morning',this)">🌅 Morning</button><button class="vibe-btn" onclick="setVibe('afternoon',this)">☀️ Afternoon</button><button class="vibe-btn" onclick="setVibe('evening',this)">🌇 Evening</button><button class="vibe-btn" onclick="setVibe('night',this)">🌙 Night</button></div>
@@ -166,7 +162,6 @@
     <div class="animal"><span class="emo">🦋</span><b>Butterfly Bella</b><span>Flying High</span></div>
   </div>
 </div>
-
 <div class="section">
   <div class="card">
     <h2>🌿 Pamela's World For You + 💖 Cute Friends</h2>
@@ -185,8 +180,6 @@
       <div class="sign">— With all my love, Pamela 🌸 Queen of Pamela's World</div>
     </div>
   </div>
-
-  <!-- 🔥 FIXED LATEST VIDEO - NO IFRAME, NO TV! Thumbnail + Play Button -->
   <div class="card">
     <h2>Latest Video</h2>
     <p class="sub">Fresh from the channel — just bloomed for you in Pamela's World.</p>
@@ -199,7 +192,6 @@
     <div style="text-align:center;"><a id="latestLink" class="channel-btn" href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g" target="_blank">▶️ Watch on YouTube →</a></div>
     <p style="text-align:center; font-size:12px; color:#9A8A8A; margin-top:6px;">Tap the photo to watch! Shorts play perfectly on YouTube 💖</p>
   </div>
-
   <div class="card">
     <h2>All Videos</h2>
     <p class="sub">Browse by month — calm, clean and easy to find.</p>
@@ -244,30 +236,21 @@
     <div style="font-size:22px; margin-top:6px;">🌸 🍃 🦋 🌿 🌷 💖 🌈</div>
   </div>
 </div>
-
 <div class="footer">
   Made with love by Pamela Team 🌿💖<br>
   <a href="https://t.me/bigolive_asia" target="_blank">Join Our Channel — t.me/bigolive_asia</a><br>
   Pamela_cullen_bot • Telegram • YouTube • 2026<br>
   Stay soft, stay natural, stay cute, stay loved in Pamela's World.
 </div>
-
 <script>
 let allVideos=[]; let currentFilter="all"; let searchText="";
-// 👇 අලුත් Video එකක් ආවම RSS එකට වැටෙන්න කලින් පෙන්නන්න ඕනේ නම්, මෙතන ID + Title දාන්න!
-// උදා: https://www.youtube.com/watch?v=ABC123 නම් ID = ABC123
-// හිස්ව තිබ්බොත් Auto විදියට ගන්නවා
 const MANUAL_LATEST_ID = "";
 const MANUAL_LATEST_TITLE = "";
-
 function monthKey(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
 function monthLabel(d){ return d.toLocaleString("en-US",{month:"long", year:"numeric"}); }
-
 function render(){
-  // 🔥 FIX: Latest Video - Thumbnail විදියට, iframe නෑ, TV නෑ! Short වලටත් වැඩ!
   if(allVideos.length>0){
     let latest = allVideos[0];
-    // Manual override තියෙනවා නම් ඒක උඩටම දාන්න
     if(MANUAL_LATEST_ID){
       latest = { id: MANUAL_LATEST_ID, title: MANUAL_LATEST_TITLE || latest.title, link: "https://www.youtube.com/watch?v=" + MANUAL_LATEST_ID, date: new Date() };
     }
@@ -303,7 +286,6 @@ function render(){
   if(shown===0 && searchText===""){ noticeBox.innerHTML=`<div class="notice">No videos in <b>${currentFilter}</b> yet. <a href="https://www.youtube.com/channel/UCR4MDIWLNe4p_J-RP0dnS5g/videos" target="_blank">View on YouTube</a></div>`; currentFilter="all"; document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b.dataset.filter==="all")); render(); return; }
   if(shown===0 && searchText!==""){ container.innerHTML="<p style='text-align:center; color:#9A8A8A; padding:14px;'>No video found.</p>"; }
 }
-
 const CHANNEL_ID_FIXED = "UCR4MDIWLNe4p_J-RP0dnS5g";
 function parseRSSXML(xmlText){
   const parser = new DOMParser();
@@ -320,66 +302,107 @@ function parseRSSXML(xmlText){
   });
   return out.sort((a,b)=>b.date-a.date);
 }
+async function fetchFresh(url){
+  const sep = url.includes("?") ? "&" : "?";
+  return fetch(url + sep + "_t=" + Date.now() + "_" + Math.random().toString(36).slice(2), { cache: "no-store", headers: { "Cache-Control": "no-cache, no-store", "Pragma": "no-cache" } });
+}
+async function tryRSSviaProxy(proxyUrl){
+  try{
+    const res = await fetchFresh(proxyUrl);
+    const txt = await res.text();
+    if(txt && txt.includes("<entry")){
+      const vids = parseRSSXML(txt);
+      if(vids.length > 0) return vids;
+    }
+  }catch(e){}
+  return null;
+}
+let isLoadingVideos = false;
 async function loadVideos(isManual=false){
+  if(isLoadingVideos && !isManual) return;
+  isLoadingVideos = true;
   const loading=document.getElementById("loading");
   const lastEl=document.getElementById("lastUpdated");
   if(isManual){ loading.style.display="block"; loading.textContent="Refreshing... 🌸"; }
-  const cacheBust = Date.now();
   const rssUrl='https://www.youtube.com/feeds/videos.xml?channel_id='+CHANNEL_ID_FIXED;
-
-  // WAY 1: allorigins Direct RSS - දැන් මේක තමයි Main! rss2json පරණ Data දෙන නිසා!
+  const enc = encodeURIComponent(rssUrl);
   try{
-    const res2 = await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(rssUrl)+'&_='+cacheBust);
-    const txt = await res2.text();
-    if(txt && txt.includes("<entry")){
-      allVideos = parseRSSXML(txt);
-      if(allVideos.length>0){
-        loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Direct)";
-        render(); return;
-      }
+    const rssProxies = [
+      'https://api.allorigins.win/raw?url=' + enc,
+      'https://corsproxy.io/?url=' + enc,
+      'https://api.codetabs.com/v1/proxy?quest=' + enc,
+      'https://api.allorigins.win/get?url=' + enc,
+      'https://thingproxy.freeboard.io/fetch/' + rssUrl
+    ];
+    const results = await Promise.allSettled(rssProxies.map(u => tryRSSviaProxy(u)));
+    let best = null;
+    results.forEach(r => { if(r.status === "fulfilled" && r.value && r.value.length > 0){ if(!best || r.value[0].date > best[0].date) best = r.value; } });
+    if(best){
+      // අලුත් Video එකක් ආවොත් විතරක් render කරන්න - නැත්තම් Screen එක Flicker වෙනවා!
+      const oldFirst = allVideos.length ? allVideos[0].id : "";
+      const newFirst = best[0].id;
+      allVideos = best;
+      loading.style.display="none";
+      if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Auto - 3 Sec)";
+      if(oldFirst !== newFirst || allVideos.length===0) render(); else render();
+      isLoadingVideos = false; return;
     }
-  }catch(e){ console.log("allorigins failed", e); }
-
-  // WAY 2: rss2json - Backup
+  }catch(e){ console.log("rss proxies failed", e); }
   try{
-    const res=await fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rssUrl)+'&_='+cacheBust);
+    const res=await fetchFresh('https://api.rss2json.com/v1/api.json?rss_url='+enc);
     const data=await res.json();
     if(data.items && data.items.length>0){
       allVideos=data.items.map(item=>{ let id=""; try{ id=new URL(item.link).searchParams.get("v"); }catch(e){} if(!id && item.guid) id=item.guid.split(":").pop(); return {title:item.title, link:item.link, id, date:new Date(item.pubDate)}; }).sort((a,b)=>b.date-a.date);
-      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅";
-      render(); return;
+      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅"; render(); isLoadingVideos=false; return;
     }
-  }catch(e){ console.log("rss2json failed", e); }
-
-  // WAY 3: Invidious
+  }catch(e){}
+  const pipedInstances = ['https://piped.video','https://pipedapi.kavin.rocks','https://pipedapi-libre.kavin.rocks'];
+  for(let base of pipedInstances){
+    try{
+      const res = await fetchFresh(base + '/channels/' + CHANNEL_ID_FIXED);
+      const data = await res.json();
+      if(data && data.latestVideos && data.latestVideos.length > 0){
+        allVideos = data.latestVideos.map(item=>{ return {title:item.title, link:'https://www.youtube.com/watch?v='+item.videoId, id:item.videoId, date:new Date(item.uploaded*1000)}; }).sort((a,b)=>b.date-a.date);
+        loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Piped - Fast)"; render(); isLoadingVideos=false; return;
+      }
+    }catch(e){}
+  }
+  const invInstances = ['https://yewtu.be','https://inv.us.projectsegfau.lt','https://invidious.0011.lt'];
+  for(let base of invInstances){
+    try{
+      const res = await fetchFresh(base + '/api/v1/channels/' + CHANNEL_ID_FIXED + '/videos');
+      const data = await res.json();
+      if(data && data.length > 0){
+        allVideos = data.map(item=>{ return {title:item.title, link:'https://www.youtube.com/watch?v='+item.videoId, id:item.videoId, date:new Date(item.published*1000)}; }).sort((a,b)=>b.date-a.date);
+        loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Invidious)"; render(); isLoadingVideos=false; return;
+      }
+    }catch(e){}
+  }
   try{
-    const res3=await fetch('https://yewtu.be/api/v1/channels/'+CHANNEL_ID_FIXED+'/videos');
-    const data3=await res3.json();
-    if(data3 && data3.length>0){
-      allVideos=data3.map(item=>{ return {title:item.title, link:'https://www.youtube.com/watch?v='+item.videoId, id:item.videoId, date:new Date(item.published*1000)}; }).sort((a,b)=>b.date-a.date);
-      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Backup)";
-      render(); return;
+    const ytPageUrl = 'https://www.youtube.com/channel/' + CHANNEL_ID_FIXED + '/videos';
+    const proxiesForPage = ['https://api.allorigins.win/raw?url=' + encodeURIComponent(ytPageUrl),'https://corsproxy.io/?url=' + encodeURIComponent(ytPageUrl)];
+    for(let pUrl of proxiesForPage){
+      try{
+        const res = await fetchFresh(pUrl);
+        const html = await res.text();
+        const ids = [...new Set([...html.matchAll(/"videoId":"([A-Za-z0-9_-]{11})"/g)].map(m => m[1]))];
+        if(ids.length > 0){
+          const titles = [...html.matchAll(/"title":{"simpleText":"([^"]+)"/g)].map(m => m[1]);
+          allVideos = ids.slice(0, 20).map((id, i) => { return {title: titles[i] || "New Video 💖", link: 'https://www.youtube.com/watch?v=' + id, id: id, date: new Date()}; });
+          loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (YouTube Live Page)"; render(); isLoadingVideos=false; return;
+        }
+      }catch(e){}
     }
-  }catch(e){ console.log("invidious failed", e); }
-
-  // WAY 4: Second Invidious
-  try{
-    const res4=await fetch('https://inv.us.projectsegfau.lt/api/v1/channels/'+CHANNEL_ID_FIXED+'/videos');
-    const data4=await res4.json();
-    if(data4 && data4.length>0){
-      allVideos=data4.map(item=>{ return {title:item.title, link:'https://www.youtube.com/watch?v='+item.videoId, id:item.videoId, date:new Date(item.published*1000)}; }).sort((a,b)=>b.date-a.date);
-      loading.style.display="none"; if(lastEl) lastEl.textContent="Last updated: "+new Date().toLocaleTimeString()+" ✅ (Backup 2)";
-      render(); return;
-    }
-  }catch(e){ console.log("invidious 2 failed", e); }
-
+  }catch(e){}
+  isLoadingVideos = false;
   loading.innerHTML="<a href='https://www.youtube.com/channel/"+CHANNEL_ID_FIXED+"/videos' target='_blank' style='color:#FF0066;'>Click here to see all videos on YouTube</a>";
 }
 document.querySelectorAll(".tab-btn").forEach(btn=>{ btn.addEventListener("click",()=>{ document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); currentFilter=btn.dataset.filter; render(); }); });
 document.getElementById("searchBox").addEventListener("input", e=>{ searchText=e.target.value; render(); });
 setTimeout(loadVideos, 500);
-setInterval(loadVideos, 120000);
-
+// 🔥 තත්පර 3න් 3ට AUTO REFRESH!
+setInterval(loadVideos, 3000);
+document.addEventListener("visibilitychange", () => { if(!document.hidden) loadVideos(); });
 function setVibe(v, btn){
   document.querySelectorAll(".vibe-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active");
   const msgs={ morning:["🌅 Good Morning!","Have a beautiful day, lovely friend!"], afternoon:["☀️ Good Afternoon!","Hope your day is sunny and sweet!"], evening:["🌇 Good Evening!","Relax, take a deep breath, you did great!"], night:["🌙 Good Night!","Sleep tight, sweet dreams from Pamela!"] };
@@ -393,7 +416,6 @@ autoGreeting();
 setInterval(()=>{ document.getElementById("clock").textContent=new Date().toLocaleTimeString(); },1000);
 setInterval(()=>{ document.getElementById("liveCount").textContent=(1500+Math.floor(Math.random()*800)).toLocaleString(); },8000);
 setInterval(()=>{ document.getElementById("todayCount").textContent=40+Math.floor(Math.random()*60); },10000);
-
 const NEXT_UPLOAD_HOUR = 18;
 const NEXT_UPLOAD_MINUTE = 0;
 function getNextUploadTime(){
@@ -424,7 +446,6 @@ function updateCountdown(){
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
-
 let W,H; const cFx=document.getElementById("fx"), ctxFx=cFx.getContext("2d");
 function resizeFx(){ W=window.innerWidth; H=window.innerHeight; cFx.width=W; cFx.height=H; }
 window.addEventListener("resize", resizeFx); resizeFx();
