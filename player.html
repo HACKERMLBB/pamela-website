@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pamela Universal Player 💖✨🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/dashjs@latest/dist/dash.all.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Quicksand',sans-serif;background:linear-gradient(180deg,#FFF5F8,#FFE0EB,#E0F7FF,#EDE7FF,#FFF8E1);color:#3E2A3A;text-align:center;padding:16px;min-height:100vh}
+  .top-emoji{font-size:32px;letter-spacing:8px;animation:floaty 3s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  h1{font-family:'Playfair Display',serif;font-size:30px;margin:6px 0 2px}
+  h1 span{background:linear-gradient(90deg,#FF0066,#FF9500,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .subtitle{font-size:13px;color:#8A7A7A;margin-bottom:14px}
+  .box{background:rgba(255,255,255,.97);max-width:780px;margin:0 auto;padding:22px;border-radius:28px;box-shadow:0 15px 40px rgba(255,0,102,.14);border:2px solid #FFE0EB;position:relative;overflow:hidden}
+  .box::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#FF0066,#FF9500,#FFE600,#00E676,#00D4FF,#A78BFA,#FF0066);background-size:400% 100%;animation:rainbow 8s linear infinite}
+  @keyframes rainbow{to{background-position:400% 0}}
+  .input-row{display:flex;gap:8px;margin:14px 0}
+  input{flex:1;padding:14px 18px;border-radius:30px;border:2px solid #FFE0EB;outline:none;font-size:14px;font-family:inherit;background:#FFF5F8}
+  input:focus{border-color:#FF0066;background:#fff}
+  .play-btn{background:linear-gradient(135deg,#FF0066,#FF9500);color:#fff;border:none;padding:14px 22px;border-radius:30px;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 6px 16px rgba(255,0,102,.35);font-size:14px}
+  .play-btn:disabled{opacity:.6}
+  .quick-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+  .quick-btn{background:#FFF0F5;border:none;padding:8px 13px;border-radius:20px;font-weight:700;cursor:pointer;font-family:inherit;font-size:12px;color:#6B5A5A}
+  .quick-btn:hover{background:#FFE0EB}
+  .site-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:8px 0}
+  .site-btn{background:#fff;border:2px solid #FFE0EB;padding:8px 12px;border-radius:20px;font-weight:800;cursor:pointer;font-family:inherit;font-size:12px}
+  .site-btn.active{background:#1A1025;color:#fff;border-color:#1A1025}
+  #videoWrap{margin-top:14px;border-radius:20px;overflow:hidden;background:#000;position:relative;display:none;border:3px solid #FFE0EB;box-shadow:0 10px 25px rgba(0,0,0,.15)}
+  video{width:100%;height:400px;display:block;background:#000}
+  #videoFrame{width:100%;height:400px;border:0;display:none;background:#000}
+  audio{width:100%;margin-top:10px;display:none}
+  @media(max-width:500px){ video,#videoFrame{height:250px} .input-row{flex-direction:column} h1{font-size:24px} }
+  .quality-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+  .q-btn{background:#FFF0F5;border:none;padding:8px 14px;border-radius:20px;font-weight:800;cursor:pointer;font-family:inherit;font-size:12px;color:#6B5A5A}
+  .q-btn.active{background:#1A1025;color:#fff}
+  #status{font-size:13px;color:#9A8A8A;margin:8px 0;word-break:break-all;background:#FFF5F8;padding:11px;border-radius:14px}
+  #infoBox{background:#FFF5F8;border:1px dashed #FF0066;border-radius:14px;padding:11px;font-size:11px;word-break:break-all;text-align:left;display:none;margin-top:10px;line-height:1.7}
+  #infoBox b{color:#FF0066}
+  .features{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0}
+  @media(max-width:500px){ .features{grid-template-columns:1fr 1fr} }
+  .feat{background:#FFF5F8;padding:12px 6px;border-radius:16px}
+  .feat .emo{font-size:24px;display:block}
+  .feat b{font-size:11px}
+  .feat span{font-size:10px;color:#9A8A8A;display:block}
+  .note{font-size:12px;color:#9A8A8A;margin-top:12px;line-height:1.8;background:#FFF0F5;padding:12px;border-radius:14px;text-align:left}
+  .note b{color:#FF0066}
+  .back{display:inline-block;margin-top:14px;background:linear-gradient(135deg,#FF0066,#FF9500);color:#fff;padding:11px 22px;border-radius:30px;text-decoration:none;font-weight:800;font-size:13px;box-shadow:0 6px 16px rgba(255,0,102,.3)}
+  .cute-row{font-size:22px;letter-spacing:6px;margin-top:12px}
+  .live-badge{display:inline-block;background:#FF0000;color:#fff;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:900;margin-left:6px;animation:blink 1s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+</style>
+</head>
+<body>
+  <div class="top-emoji">💖 ✨ 🌸 🦋 💎 🌈 ⭐ 🍃 🎬</div>
+  <h1>Pamela <span>Universal Player</span> 💖</h1>
+  <p class="subtitle">✨ Any Link • Any Site • Any Video • Live Too! ✨</p>
+  <div class="box">
+    <div style="font-size:22px;letter-spacing:6px">🌸 🍃 🦋 🌷 💖 🌈 ✨ 🎬</div>
+    <p style="font-size:14px;font-weight:900;margin-top:6px">💖 Paste ANY Link Here! 👇 <span id="liveTag"></span></p>
+    <p style="font-size:12px;color:#9A8A8A">YouTube • Facebook • Instagram • TikTok • Vimeo • MP4 • m3u8 • MPD • Live • Any Link!</p>
+    <div class="site-row" id="siteRow">
+      <button class="site-btn active" data-type="auto" onclick="setType('auto',this)">✨ Auto Detect 💖</button>
+      <button class="site-btn" data-type="youtube" onclick="setType('youtube',this)">▶️ YouTube</button>
+      <button class="site-btn" data-type="video" onclick="setType('video',this)">🎬 Direct Video</button>
+      <button class="site-btn" data-type="m3u8" onclick="setType('m3u8',this)">📡 m3u8 / HLS</button>
+      <button class="site-btn" data-type="mpd" onclick="setType('mpd',this)">📺 MPD / DASH</button>
+      <button class="site-btn" data-type="audio" onclick="setType('audio',this)">🎵 Audio / MP3</button>
+      <button class="site-btn" data-type="social" onclick="setType('social',this)">📱 Social / TikTok / FB / IG</button>
+      <button class="site-btn" data-type="live" onclick="setType('live',this)">🔴 Live</button>
+    </div>
+    <div class="input-row">
+      <input id="anyLink" placeholder="💖 Paste ANY Link Here... ✨🌸" />
+      <button id="playBtn" class="play-btn" onclick="loadAnyLink()">▶️ Play 💖</button>
+    </div>
+    <div class="quick-row">
+      <button class="quick-btn" onclick="pasteDemo('youtube')">🎬 Demo YouTube</button>
+      <button class="quick-btn" onclick="pasteDemo('mp4')">🎬 Demo MP4</button>
+      <button class="quick-btn" onclick="pasteDemo('m3u8')">📡 Demo m3u8</button>
+      <button class="quick-btn" onclick="pasteDemo('mpd')">📺 Demo MPD</button>
+      <button class="quick-btn" onclick="clearAll()">🧹 Clear</button>
+      <button class="quick-btn" onclick="copyDirect()">🔗 Copy Direct Link</button>
+    </div>
+    <div id="status">🌸 Waiting for ANY link... Paste and press Play! 💖✨</div>
+    <div class="quality-row" id="qualityRow" style="display:none"></div>
+    <div id="videoWrap">
+      <video id="video" controls playsinline></video>
+      <iframe id="videoFrame" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <audio id="audio" controls></audio>
+    </div>
+    <div id="infoBox"></div>
+    <div class="features">
+      <div class="feat"><span class="emo">🌍</span><b>Any Site</b><span>All Links Work</span></div>
+      <div class="feat"><span class="emo">🔴</span><b>Live Too</b><span>YouTube / Twitch Live</span></div>
+      <div class="feat"><span class="emo">⚡</span><b>Super Fast</b><span>Instant Play</span></div>
+      <div class="feat"><span class="emo">📡</span><b>m3u8 + MPD</b><span>HLS + DASH</span></div>
+      <div class="feat"><span class="emo">🎬</span><b>MP4 + WEBM</b><span>Direct Play</span></div>
+      <div class="feat"><span class="emo">📱</span><b>Social Ready</b><span>FB / IG / TikTok</span></div>
+    </div>
+    <div class="note"><b>✨ How It Works:</b><br>💖 Any Link &rarr; Auto Detect Type &rarr; yt-dlp / Piped / Invidious / Direct &rarr; m3u8 / MP4 / MPD &rarr; Play! 🎬<br>🔴 Live = m3u8 too! So Live also plays! 🌸 This is a separate page! Your main site is not changed at all!</div>
+    <a class="back" href="index.html">💖 Back To Pamela&apos;s World 🌸</a>
+    <a class="back" href="downloader.html" style="background:#1A1025">⬇️ Go To Downloader 💖</a>
+    <div class="cute-row">🌸 🍃 🦋 🌿 🌷 💖 🌈 ✨ ⭐ 🎬</div>
+  </div>
+<script>
+let hls = null; let dashPlayer = null; let selectedType = "auto"; let lastDirect = "";
+function setType(t, btn){ selectedType = t; document.querySelectorAll(".site-btn").forEach(b=>b.classList.remove("active")); if(btn) btn.classList.add("active"); }
+function setStatus(t){ document.getElementById("status").innerHTML = t; }
+function showInfo(t){ const b=document.getElementById("infoBox"); b.style.display="block"; b.innerHTML=t; }
+function pasteDemo(kind){ const demos = { youtube: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", mp4: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4", m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", mpd: "https://dash.akamaized.net/akamai/bbb_30fps/bbb_30fps.mpd" }; document.getElementById("anyLink").value = demos[kind] || demos.youtube; setStatus("💖 Demo link pasted! Press Play! ✨"); }
+function clearAll(){ document.getElementById("anyLink").value = ""; document.getElementById("videoWrap").style.display = "none"; document.getElementById("qualityRow").style.display = "none"; document.getElementById("infoBox").style.display = "none"; if(hls){ hls.destroy(); hls = null; } if(dashPlayer){ dashPlayer.reset(); dashPlayer = null; } setStatus("🧹 Cleared! Paste a new link! 🌸"); }
+function copyDirect(){ if(!lastDirect){ setStatus("⚠️ No link found yet! Play a video first! 💖"); return; } navigator.clipboard.writeText(lastDirect).then(()=> setStatus("✅ Direct Link Copied! 💖✨")); }
+function getYouTubeId(url){ url = url.trim(); if(/^[A-Za-z0-9_-]{11}$/.test(url)) return url; try{ const u = new URL(url); if(u.searchParams.get("v")) return u.searchParams.get("v"); if(u.hostname.includes("youtu.be")) return u.pathname.replace("/","").split("?")[0]; if(u.pathname.includes("/shorts/")) return u.pathname.split("/shorts/")[1].split("/")[0].split("?")[0]; if(u.pathname.includes("/embed/")) return u.pathname.split("/embed/")[1].split("/")[0].split("?")[0]; if(u.pathname.includes("/live/")) return u.pathname.split("/live/")[1].split("/")[0].split("?")[0]; }catch(e){} return null; }
+function isLiveLink(url){ const low=url.toLowerCase(); return low.includes("/live") || low.includes("is_live") || low.includes("twitch.tv") || low.includes("kick.com"); }
+function detectType(url){ const low = url.toLowerCase(); if(selectedType !== "auto") return selectedType; if(low.includes("youtube.com") || low.includes("youtu.be")) return "youtube"; if(low.includes(".m3u8")) return "m3u8"; if(low.includes(".mpd")) return "mpd"; if(low.match(/\.(mp4|webm|mov|mkv|avi)(\?|$)/)) return "video"; if(low.match(/\.(mp3|wav|ogg|m4a|aac)(\?|$)/)) return "audio"; if(low.includes("tiktok.com") || low.includes("facebook.com") || low.includes("fb.watch") || low.includes("instagram.com") || low.includes("vimeo.com") || low.includes("dailymotion.com") || low.includes("twitch.tv") || low.includes("kick.com") || low.includes("x.com") || low.includes("twitter.com")) return "social"; if(low.startsWith("http")) return "social"; return "auto"; }
+function resetPlayer(){ const video = document.getElementById("video"); const frame = document.getElementById("videoFrame"); const audio = document.getElementById("audio"); video.style.display = "none"; video.src = ""; video.pause(); frame.style.display = "none"; frame.src = ""; audio.style.display = "none"; audio.src = ""; audio.pause(); if(hls){ hls.destroy(); hls = null; } if(dashPlayer){ dashPlayer.reset(); dashPlayer = null; } document.getElementById("videoWrap").style.display = "block"; }
+function playDirectVideo(url, label){ resetPlayer(); const video = document.getElementById("video"); video.style.display = "block"; video.src = url; video.play().catch(()=>{}); lastDirect = url; showInfo("<b>🎬 Playing:</b> " + label + " 💖<br>✨ " + url.substring(0, 220) + "..."); }
+function playM3U8(url, label){ resetPlayer(); const video = document.getElementById("video"); video.style.display = "block"; lastDirect = url; showInfo("<b>📡 m3u8 Found:</b> " + label + " 💖<br>✨ " + url.substring(0, 220) + "..."); if(Hls.isSupported()){ hls = new Hls({ maxBufferLength: 30, maxMaxBufferLength: 60, liveSyncDurationCount: 3 }); hls.loadSource(url); hls.attachMedia(video); hls.on(Hls.Events.MANIFEST_PARSED, ()=> video.play().catch(()=>{})); hls.on(Hls.Events.ERROR, (e, data)=>{ if(data.fatal){ if(data.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad(); else if(data.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError(); } }); } else if(video.canPlayType('application/vnd.apple.mpegurl')){ video.src = url; video.play().catch(()=>{}); } }
+function playMPD(url, label){ resetPlayer(); const video = document.getElementById("video"); video.style.display = "block"; lastDirect = url; showInfo("<b>📺 MPD / DASH Found:</b> " + label + " 💖<br>✨ " + url.substring(0, 220) + "..."); dashPlayer = dashjs.MediaPlayer().create(); dashPlayer.initialize(video, url, true); }
+function playAudio(url, label){ resetPlayer(); const audio = document.getElementById("audio"); audio.style.display = "block"; audio.src = url; audio.play().catch(()=>{}); lastDirect = url; showInfo("<b>🎵 Audio Playing:</b> " + label + " 💖<br>✨ " + url.substring(0, 220) + "..."); }
+function playEmbed(url, label){ resetPlayer(); const frame = document.getElementById("videoFrame"); frame.style.display = "block"; frame.src = url; lastDirect = url; showInfo("<b>🌍 Embed Playing:</b> " + label + " 💖<br>✨ " + url.substring(0, 220) + "..."); }
+function showQualities(formats){ const row = document.getElementById("qualityRow"); row.style.display = "flex"; row.innerHTML = ""; formats.forEach((f, i)=>{ const b = document.createElement("button"); b.className = "q-btn" + (i===0 ? " active" : ""); b.textContent = f.label; b.onclick = ()=>{ document.querySelectorAll(".q-btn").forEach(x=>x.classList.remove("active")); b.classList.add("active"); if(f.url.includes(".m3u8")) playM3U8(f.url, f.label); else if(f.url.includes(".mpd")) playMPD(f.url, f.label); else playDirectVideo(f.url, f.label); }; row.appendChild(b); }); }
+async function tryYtDlpBackendAny(originalUrl){ try{ const res = await fetch('/api/get-video?url=' + encodeURIComponent(originalUrl)); const data = await res.json(); if(data && data.m3u8) return [{ label: "🔥 yt-dlp m3u8 💖", url: data.m3u8 }]; if(data && data.direct) return [{ label: "🔥 yt-dlp Direct 💖", url: data.direct }]; if(data && data.formats) return data.formats; }catch(e){} return null; }
+async function tryPiped(videoId){ const bases = ['https://piped.video','https://pipedapi.kavin.rocks','https://pipedapi-libre.kavin.rocks']; for(let base of bases){ try{ const res = await fetch(base + '/streams/' + videoId); const data = await res.json(); if(data && data.hls) return [{ label: "✨ Piped HLS 💖", url: data.hls }]; }catch(e){} } return null; }
+async function tryInvidious(videoId){ const bases = ['https://yewtu.be','https://inv.us.projectsegfau.lt','https://invidious.0011.lt']; for(let base of bases){ try{ const res = await fetch(base + '/api/v1/videos/' + videoId); const data = await res.json(); if(data && data.formatStreams){ const h = data.formatStreams.find(f => f.url && f.url.includes("m3u8")); if(h) return [{ label: "✨ Invidious 💖", url: h.url }]; } if(data && data.hlsUrl) return [{ label: "✨ Invidious HLS 💖", url: data.hlsUrl }]; }catch(e){} } return null; }
+async function loadAnyLink(){
+  const link = document.getElementById("anyLink").value.trim();
+  if(!link){ setStatus("❌ Please paste ANY link first! 💖"); return; }
+  const btn = document.getElementById("playBtn");
+  btn.disabled = true; btn.textContent = "Loading... 🌸";
+  const type = detectType(link);
+  const live = isLiveLink(link) || selectedType === "live";
+  if(live) document.getElementById("liveTag").innerHTML = "<span class='live-badge'>🔴 LIVE</span>";
+  setStatus("🔍 Detecting... Type: <b>" + type.toUpperCase() + "</b> " + (live ? "🔴 LIVE " : "") + "✨ Finding best stream... 💖");
+  if(type === "m3u8"){ playM3U8(link, "Direct m3u8" + (live ? " 🔴 LIVE" : "")); setStatus("✅ Playing m3u8! 📡💖" + (live ? " 🔴 LIVE!" : "")); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+  if(type === "mpd"){ playMPD(link, "Direct MPD"); setStatus("✅ Playing MPD / DASH! 📺💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+  if(type === "video"){ playDirectVideo(link, "Direct Video"); setStatus("✅ Playing Direct Video! 🎬💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+  if(type === "audio"){ playAudio(link, "Direct Audio"); setStatus("✅ Playing Audio! 🎵💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+  if(type === "youtube" || type === "live"){
+    const vid = getYouTubeId(link);
+    if(vid){
+      let formats = await tryYtDlpBackendAny(link);
+      if(formats && formats.length){ showQualities(formats); const f=formats[0]; if(f.url.includes(".m3u8")) playM3U8(f.url,f.label); else playDirectVideo(f.url,f.label); setStatus("✅ Found via yt-dlp! 🔥💖" + (live ? " 🔴 LIVE!" : "")); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+      formats = await tryPiped(vid);
+      if(formats && formats.length){ showQualities(formats); playM3U8(formats[0].url, formats[0].label); setStatus("✅ Found via Piped! ✨💖" + (live ? " 🔴 LIVE!" : "")); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+      formats = await tryInvidious(vid);
+      if(formats && formats.length){ showQualities(formats); playM3U8(formats[0].url, formats[0].label); setStatus("✅ Found via Invidious! ✨💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+      playEmbed("https://www.youtube-nocookie.com/embed/" + vid + "?autoplay=1", "YouTube Embed");
+      setStatus("⚠️ m3u8 not found! Playing via YouTube Embed! 💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return;
+    }
+  }
+  if(type === "social" || type === "auto" || type === "live"){
+    let formats = await tryYtDlpBackendAny(link);
+    if(formats && formats.length){ showQualities(formats); const f = formats[0]; if(f.url.includes(".m3u8")) playM3U8(f.url, f.label); else if(f.url.includes(".mpd")) playMPD(f.url, f.label); else if(f.url.match(/\.(mp3|wav|ogg|m4a)/)) playAudio(f.url, f.label); else playDirectVideo(f.url, f.label); setStatus("✅ Found via yt-dlp! Works for ANY site! 🔥💖" + (live ? " 🔴 LIVE!" : "")); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+    if(link.includes("vimeo.com")){ const id = link.split("/").filter(Boolean).pop().split("?")[0]; playEmbed("https://player.vimeo.com/video/" + id + "?autoplay=1", "Vimeo Embed"); setStatus("✅ Playing via Vimeo Embed! 💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+    if(link.includes("dailymotion.com") || link.includes("dai.ly")){ const id = link.split("/").filter(Boolean).pop().split("_")[0]; playEmbed("https://www.dailymotion.com/embed/video/" + id + "?autoplay=1", "Dailymotion Embed"); setStatus("✅ Playing via Dailymotion Embed! 💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+    if(link.includes("twitch.tv")){ const ch = link.split("/").filter(Boolean).pop().split("?")[0]; playEmbed("https://player.twitch.tv/?channel=" + ch + "&parent=" + location.hostname + "&autoplay=true", "Twitch Live Embed"); setStatus("✅ Playing Twitch Live via Embed! 🔴💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+    if(link.includes("tiktok.com")){ playEmbed(link, "TikTok Embed"); setStatus("⚠️ TikTok needs yt-dlp Backend for direct play! Opening embed! 💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+    if(link.includes("facebook.com") || link.includes("fb.watch") || link.includes("instagram.com")){ playEmbed(link, "Social Embed"); setStatus("⚠️ Facebook / Instagram needs yt-dlp Backend for direct play! Opening embed! 💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return; }
+    playDirectVideo(link, "Trying as Direct Video");
+    setStatus("⚠️ Trying as Direct Video... If not playing, use yt-dlp Backend! 💖"); btn.disabled=false; btn.textContent="▶️ Play 💖"; return;
+  }
+  btn.disabled = false; btn.textContent = "▶️ Play 💖";
+}
+window.addEventListener("load", ()=>{ const p = new URLSearchParams(location.search); const v = p.get("url") || p.get("v") || p.get("link"); if(v){ document.getElementById("anyLink").value = v; loadAnyLink(); } });
+</script>
+</body>
+      </html>
