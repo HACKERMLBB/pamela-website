@@ -1,12 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const ytdlp = require('yt-dlp-exec');
+const ytdlp = require('youtube-dl-exec');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// 1. Website එක Serve කරනවා (index.html / player.html / downloader.html)
 app.use(express.static(path.join(__dirname, '.')));
-app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'index.html')); });
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// 2. yt-dlp Backend - Player එකට
 app.get('/api/get-video', async (req, res) => {
   const url = req.query.url;
   if(!url) return res.json({ error: "No URL" });
@@ -29,6 +36,8 @@ app.get('/api/get-video', async (req, res) => {
     return res.json({ error: "yt-dlp failed: " + e.message });
   }
 });
+
+// 3. yt-dlp Backend - Downloader එකට
 app.get('/api/get-qualities', async (req, res) => {
   const url = req.query.url;
   if(!url) return res.json({ error: "No URL" });
@@ -44,5 +53,6 @@ app.get('/api/get-qualities', async (req, res) => {
     res.json({ title: data.title || "Video", thumbnail: data.thumbnail || "", formats: formats.slice(0, 20) });
   } catch(e) { res.json({ error: "failed" }); }
 });
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Pamela Website + Backend Running on " + PORT + " 💖"));
