@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pamela Downloader 💖✨🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Quicksand',sans-serif;background:linear-gradient(180deg,#FFF5F8,#FFE0EB,#E0F7FF,#EDE7FF,#FFF8E1);color:#3E2A3A;text-align:center;padding:16px;min-height:100vh}
+  .top-emoji{font-size:32px;letter-spacing:8px;animation:floaty 3s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  h1{font-family:'Playfair Display',serif;font-size:30px;margin:6px 0 2px}
+  h1 span{background:linear-gradient(90deg,#FF0066,#FF9500,#A78BFA);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .subtitle{font-size:13px;color:#8A7A7A;margin-bottom:14px}
+  .box{background:rgba(255,255,255,.97);max-width:780px;margin:0 auto;padding:22px;border-radius:28px;box-shadow:0 15px 40px rgba(255,0,102,.14);border:2px solid #FFE0EB;position:relative;overflow:hidden}
+  .box::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#FF0066,#FF9500,#FFE600,#00E676,#00D4FF,#A78BFA,#FF0066);background-size:400% 100%;animation:rainbow 8s linear infinite}
+  @keyframes rainbow{to{background-position:400% 0}}
+  .input-row{display:flex;gap:8px;margin:14px 0}
+  input{flex:1;padding:14px 18px;border-radius:30px;border:2px solid #FFE0EB;outline:none;font-size:14px;font-family:inherit;background:#FFF5F8}
+  input:focus{border-color:#FF0066;background:#fff}
+  .go-btn{background:linear-gradient(135deg,#FF0066,#FF9500);color:#fff;border:none;padding:14px 22px;border-radius:30px;font-weight:900;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 6px 16px rgba(255,0,102,.35);font-size:14px}
+  .go-btn:disabled{opacity:.6}
+  .quick-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+  .quick-btn{background:#FFF0F5;border:none;padding:8px 13px;border-radius:20px;font-weight:700;cursor:pointer;font-family:inherit;font-size:12px;color:#6B5A5A}
+  .quick-btn:hover{background:#FFE0EB}
+  #status{font-size:13px;color:#9A8A8A;margin:8px 0;word-break:break-all;background:#FFF5F8;padding:11px;border-radius:14px}
+  #preview{margin:14px 0;display:none;border-radius:20px;overflow:hidden;border:3px solid #FFE0EB;background:#000}
+  #preview img{width:100%;max-height:320px;object-fit:cover;display:block}
+  #previewInfo{padding:12px;background:#fff;text-align:left}
+  #previewInfo b{font-size:15px;display:block}
+  #previewInfo span{font-size:12px;color:#9A8A8A}
+  #thumbVideo{width:100%;height:280px;display:none;background:#000}
+  .filter-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+  .filter-btn{background:#fff;border:2px solid #FFE0EB;padding:8px 14px;border-radius:20px;font-weight:800;cursor:pointer;font-family:inherit;font-size:12px}
+  .filter-btn.active{background:#1A1025;color:#fff;border-color:#1A1025}
+  #list{display:none;margin-top:10px;text-align:left}
+  .dl-card{display:flex;gap:10px;align-items:center;background:#FFF5F8;border:1px solid #FFE0EB;border-radius:18px;padding:12px;margin:8px 0}
+  .dl-icon{width:52px;height:52px;min-width:52px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+  .dl-info{flex:1;text-align:left;min-width:0}
+  .dl-info b{font-size:14px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dl-info span{font-size:11px;color:#9A8A8A}
+  .dl-badge{display:inline-block;font-size:10px;font-weight:900;padding:3px 8px;border-radius:20px;margin-right:4px;color:#fff}
+  .b-video{background:#FF0066}.b-audio{background:#7C5CFF}.b-hls{background:#00A8CC}.b-best{background:#FF9500}
+  .dl-btn{background:linear-gradient(135deg,#FF0066,#FF9500);color:#fff;border:none;padding:10px 16px;border-radius:30px;font-weight:900;cursor:pointer;font-family:inherit;font-size:12px;white-space:nowrap;box-shadow:0 4px 12px rgba(255,0,102,.3)}
+  .dl-btn.green{background:linear-gradient(135deg,#00C853,#00E676)}
+  .dl-btn.purple{background:linear-gradient(135deg,#7C5CFF,#A78BFA)}
+  .dl-btn:disabled{opacity:.6}
+  #progressWrap{display:none;background:#FFF0F5;border-radius:14px;padding:12px;margin:10px 0;text-align:left}
+  #progressBar{height:10px;background:#FFE0EB;border-radius:20px;overflow:hidden;margin-top:6px}
+  #progressFill{height:100%;width:0%;background:linear-gradient(90deg,#FF0066,#FF9500,#FFE600,#00E676);transition:.3s}
+  .features{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0}
+  @media(max-width:500px){ .features{grid-template-columns:1fr 1fr} .input-row{flex-direction:column} h1{font-size:24px} .dl-card{flex-direction:column;text-align:center} .dl-info{text-align:center} }
+  .feat{background:#FFF5F8;padding:12px 6px;border-radius:16px}
+  .feat .emo{font-size:24px;display:block}
+  .feat b{font-size:11px}
+  .feat span{font-size:10px;color:#9A8A8A;display:block}
+  .note{font-size:12px;color:#9A8A8A;margin-top:12px;line-height:1.8;background:#FFF0F5;padding:12px;border-radius:14px;text-align:left}
+  .note b{color:#FF0066}
+  .back{display:inline-block;margin-top:14px;background:linear-gradient(135deg,#FF0066,#FF9500);color:#fff;padding:11px 22px;border-radius:30px;text-decoration:none;font-weight:800;font-size:13px;box-shadow:0 6px 16px rgba(255,0,102,.3);margin:3px}
+  .back.dark{background:#1A1025}
+  .cute-row{font-size:22px;letter-spacing:6px;margin-top:12px}
+</style>
+</head>
+<body>
+  <div class="top-emoji">💖 ✨ 🌸 🦋 💎 🌈 ⭐ 🍃 ⬇️</div>
+  <h1>Pamela <span>Downloader</span> 💖</h1>
+  <p class="subtitle">✨ Any Link • Auto Quality • Pick & Download! ✨</p>
+  <div class="box">
+    <div style="font-size:22px;letter-spacing:6px">🌸 🍃 🦋 🌷 💖 🌈 ✨ ⬇️</div>
+    <p style="font-size:14px;font-weight:900;margin-top:6px">💖 Paste ANY Link Here! 👇</p>
+    <p style="font-size:12px;color:#9A8A8A">YouTube • Facebook • Instagram • TikTok • Vimeo • MP4 • m3u8 • Any Link!</p>
+    <div class="input-row">
+      <input id="dlLink" placeholder="💖 Paste ANY Link Here... ✨🌸" />
+      <button id="fetchBtn" class="go-btn" onclick="fetchQualities()">🔍 Get Qualities 💖</button>
+    </div>
+    <div class="quick-row">
+      <button class="quick-btn" onclick="pasteDemo('youtube')">🎬 Demo YouTube</button>
+      <button class="quick-btn" onclick="pasteDemo('mp4')">🎬 Demo MP4</button>
+      <button class="quick-btn" onclick="pasteDemo('m3u8')">📡 Demo m3u8</button>
+      <button class="quick-btn" onclick="clearAll()">🧹 Clear</button>
+    </div>
+    <div id="status">🌸 Waiting for ANY link... Paste and press Get Qualities! 💖✨</div>
+    <div id="preview">
+      <img id="previewImg" src="" alt="Thumbnail">
+      <video id="thumbVideo" controls playsinline></video>
+      <div id="previewInfo"><b id="previewTitle">Title</b><span id="previewMeta">...</span></div>
+    </div>
+    <div class="filter-row" id="filterRow" style="display:none">
+      <button class="filter-btn active" data-f="all" onclick="setFilter('all',this)">✨ All 💖</button>
+      <button class="filter-btn" data-f="video" onclick="setFilter('video',this)">🎬 Video Only</button>
+      <button class="filter-btn" data-f="audio" onclick="setFilter('audio',this)">🎵 Audio Only</button>
+      <button class="filter-btn" data-f="best" onclick="setFilter('best',this)">⭐ Best Quality</button>
+    </div>
+    <div id="progressWrap">
+      <div style="font-size:13px;font-weight:900">⬇️ Downloading... <span id="progressText">0%</span> 💖</div>
+      <div id="progressBar"><div id="progressFill"></div></div>
+      <div style="font-size:11px;color:#9A8A8A;margin-top:4px" id="progressInfo">Please keep this page open! 🌸</div>
+    </div>
+    <div id="list"></div>
+    <div class="features">
+      <div class="feat"><span class="emo">🌍</span><b>Any Site</b><span>All Links Work</span></div>
+      <div class="feat"><span class="emo">✨</span><b>Auto Quality</b><span>1080p / 720p / 480p</span></div>
+      <div class="feat"><span class="emo">🎵</span><b>MP3 Too</b><span>Audio Only</span></div>
+      <div class="feat"><span class="emo">⬇️</span><b>One Tap</b><span>Easy Download</span></div>
+      <div class="feat"><span class="emo">💖</span><b>Super Cute</b><span>Made With Love</span></div>
+      <div class="feat"><span class="emo">🌸</span><b>100% Free</b><span>Forever Free</span></div>
+    </div>
+    <div class="note"><b>✨ How It Works:</b><br>💖 Any Link &rarr; Auto Detect &rarr; yt-dlp / Piped / Direct &rarr; All Qualities List &rarr; Pick One &rarr; Download! ⬇️<br>🌸 This is a separate page! Your main site is not changed at all!<br>⚠️ Tip: For Facebook / Instagram / TikTok, yt-dlp Backend is needed for full qualities!</div>
+    <a class="back" href="player.html">▶️ Go To Player 💖</a>
+    <a class="back dark" href="index.html">💖 Back To Pamela&apos;s World 🌸</a>
+    <div class="cute-row">🌸 🍃 🦋 🌿 🌷 💖 🌈 ✨ ⭐ ⬇️</div>
+  </div>
+<script>
+let allFormats = []; let currentFilter = "all"; let currentTitle = "Pamela_Video"; let currentThumb = "";
+function setStatus(t){ document.getElementById("status").innerHTML = t; }
+function setFilter(f, btn){ currentFilter = f; document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active")); if(btn) btn.classList.add("active"); renderList(); }
+function pasteDemo(kind){ const demos = { youtube: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", mp4: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4", m3u8: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" }; document.getElementById("dlLink").value = demos[kind] || demos.youtube; setStatus("💖 Demo link pasted! Press Get Qualities! ✨"); }
+function clearAll(){ document.getElementById("dlLink").value = ""; document.getElementById("list").style.display = "none"; document.getElementById("list").innerHTML = ""; document.getElementById("preview").style.display = "none"; document.getElementById("filterRow").style.display = "none"; document.getElementById("progressWrap").style.display = "none"; allFormats = []; setStatus("🧹 Cleared! Paste a new link! 🌸"); }
+function cleanFileName(s){ return (s || "Pamela_Video").replace(/[^\w\s-]/g,"").trim().replace(/\s+/g,"_").substring(0,60) || "Pamela_Video"; }
+function formatSize(bytes){ if(!bytes) return "Unknown Size"; if(bytes < 1024) return bytes + " B"; if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + " KB"; return (bytes/1024/1024).toFixed(1) + " MB"; }
+function getYouTubeId(url){ url = url.trim(); if(/^[A-Za-z0-9_-]{11}$/.test(url)) return url; try{ const u = new URL(url); if(u.searchParams.get("v")) return u.searchParams.get("v"); if(u.hostname.includes("youtu.be")) return u.pathname.replace("/","").split("?")[0]; if(u.pathname.includes("/shorts/")) return u.pathname.split("/shorts/")[1].split("/")[0].split("?")[0]; if(u.pathname.includes("/live/")) return u.pathname.split("/live/")[1].split("/")[0].split("?")[0]; if(u.pathname.includes("/embed/")) return u.pathname.split("/embed/")[1].split("/")[0].split("?")[0]; }catch(e){} return null; }
+function renderList(){
+  const box = document.getElementById("list"); box.style.display = "block"; box.innerHTML = "";
+  let filtered = allFormats;
+  if(currentFilter === "video") filtered = allFormats.filter(f => f.kind === "video");
+  if(currentFilter === "audio") filtered = allFormats.filter(f => f.kind === "audio");
+  if(currentFilter === "best") filtered = allFormats.slice(0, 3);
+  if(filtered.length === 0){ box.innerHTML = "<p style='text-align:center;color:#9A8A8A;padding:12px'>No format found for this filter! 💖</p>"; return; }
+  const head = document.createElement("p"); head.style.cssText = "text-align:center;font-weight:900;font-size:14px;margin:6px 0"; head.innerHTML = "✨ Found " + filtered.length + " Qualities! Pick One! 👇 💖"; box.appendChild(head);
+  filtered.forEach((f, idx)=>{
+    const card = document.createElement("div"); card.className = "dl-card";
+    const isAudio = f.kind === "audio"; const isBest = idx === 0 && currentFilter === "all";
+    const icon = isAudio ? "🎵" : (f.url.includes(".m3u8") ? "📡" : "🎬");
+    const badge = isBest ? "<span class='dl-badge b-best'>⭐ BEST</span>" : (isAudio ? "<span class='dl-badge b-audio'>🎵 AUDIO</span>" : "<span class='dl-badge b-video'>🎬 VIDEO</span>");
+    const badge2 = f.url.includes(".m3u8") ? "<span class='dl-badge b-hls'>📡 HLS</span>" : "";
+    card.innerHTML = "<div class='dl-icon'>" + icon + "</div>" + "<div class='dl-info'><b>" + f.label + "</b><span>" + badge + badge2 + " " + (f.ext ? "• " + f.ext.toUpperCase() : "") + " • " + formatSize(f.size) + (f.note ? " • " + f.note : "") + "</span></div>" + "<button class='dl-btn " + (isAudio ? "purple" : (isBest ? "green" : "")) + "'>⬇️ Download</button>";
+    box.appendChild(card);
+    const btn = card.querySelector("button");
+    btn.onclick = () => downloadOne(allFormats.indexOf(f), btn);
+  });
+}
+async function downloadOne(realIdx, btn){
+  const f = allFormats[realIdx]; if(!f) return;
+  const old = btn.textContent; btn.textContent = "⏳ Loading..."; btn.disabled = true;
+  document.getElementById("progressWrap").style.display = "block";
+  document.getElementById("progressText").textContent = "Starting... 🌸";
+  document.getElementById("progressFill").style.width = "15%";
+  try {
+    if(f.downloadUrl){
+      const a = document.createElement("a"); a.href = f.downloadUrl; a.download = cleanFileName(currentTitle) + "_" + cleanFileName(f.label) + "." + (f.ext || "mp4"); a.target = "_blank"; document.body.appendChild(a); a.click(); a.remove();
+      document.getElementById("progressFill").style.width = "100%"; document.getElementById("progressText").textContent = "Done! 💖"; setStatus("✅ Download started! Check your downloads! 💖✨");
+    } else {
+      const res = await fetch(f.url); if(!res.ok) throw new Error("Fetch failed");
+      const total = parseInt(res.headers.get("content-length") || "0"); const reader = res.body.getReader(); const chunks = []; let got = 0;
+      while(true){ const { done, value } = await reader.read(); if(done) break; chunks.push(value); got += value.length; if(total){ const p = Math.round(got/total*100); document.getElementById("progressFill").style.width = p + "%"; document.getElementById("progressText").textContent = p + "% 💖"; document.getElementById("progressInfo").textContent = formatSize(got) + " / " + formatSize(total) + " 🌸"; } else { document.getElementById("progressText").textContent = formatSize(got) + " 💖"; } }
+      const blob = new Blob(chunks); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = cleanFileName(currentTitle) + "_" + cleanFileName(f.label) + "." + (f.ext || "mp4"); document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=> URL.revokeObjectURL(url), 5000);
+      document.getElementById("progressFill").style.width = "100%"; document.getElementById("progressText").textContent = "Done! 💖"; setStatus("✅ Download complete! Enjoy! 💖✨");
+    }
+  } catch(e) { const a = document.createElement("a"); a.href = f.url; a.target = "_blank"; a.download = cleanFileName(currentTitle) + "." + (f.ext || "mp4"); document.body.appendChild(a); a.click(); a.remove(); setStatus("⚠️ Direct download opened in new tab! Long press / Save to download! 💖"); }
+  btn.textContent = old; btn.disabled = false; setTimeout(()=>{ document.getElementById("progressWrap").style.display = "none"; }, 4000);
+}
+async function tryBackend(link){ try{ const res = await fetch('/api/get-qualities?url=' + encodeURIComponent(link)); const data = await res.json(); if(data && data.formats && data.formats.length) return data; }catch(e){} return null; }
+async function tryPipedFormats(videoId){ try{ const bases = ['https://piped.video','https://pipedapi.kavin.rocks']; for(let base of bases){ const res = await fetch(base + '/streams/' + videoId); const data = await res.json(); if(data && (data.videoStreams || data.audioStreams)){ const formats = []; (data.videoStreams || []).forEach(v=>{ formats.push({ label: "🎬 " + (v.quality || "Video") + " • " + (v.mimeType || "MP4"), kind: "video", ext: "mp4", url: v.url, size: 0, note: v.mimeType || "", downloadUrl: v.url }); }); (data.audioStreams || []).forEach(a=>{ formats.push({ label: "🎵 Audio • " + (a.quality || "") + " • " + (a.mimeType || "Audio"), kind: "audio", ext: "mp3", url: a.url, size: 0, note: a.mimeType || "", downloadUrl: a.url }); }); if(data.hls) formats.unshift({ label: "⭐ Best • Auto HLS • 1080p 💖", kind: "video", ext: "mp4", url: data.hls, size: 0, note: "HLS", downloadUrl: data.hls }); return { title: data.title || "YouTube Video", thumbnail: (data.thumbnail || ""), formats }; } } }catch(e){} return null; }
+async function fetchQualities(){
+  const link = document.getElementById("dlLink").value.trim(); if(!link){ setStatus("❌ Please paste ANY link first! 💖"); return; }
+  const btn = document.getElementById("fetchBtn"); btn.disabled = true; btn.textContent = "Loading... 🌸"; setStatus("🔍 Finding qualities... Please wait! ✨💖");
+  document.getElementById("list").style.display = "none"; document.getElementById("preview").style.display = "none"; document.getElementById("filterRow").style.display = "none";
+  allFormats = []; currentFilter = "all"; document.querySelectorAll(".filter-btn").forEach(b=>b.classList.toggle("active", b.dataset.f==="all"));
+  const low = link.toLowerCase();
+  if(low.includes(".mp4") || low.includes(".webm") || low.includes(".mov") || low.includes(".mkv")){ const ext = low.includes(".webm") ? "webm" : low.includes(".mov") ? "mov" : "mp4"; currentTitle = "Direct_Video"; currentThumb = ""; allFormats = [{ label: "⭐ Best • Direct " + ext.toUpperCase() + " 💖", kind: "video", ext, url: link, size: 0, note: "Direct File", downloadUrl: link }]; document.getElementById("preview").style.display = "block"; document.getElementById("previewImg").style.display = "none"; const v = document.getElementById("thumbVideo"); v.style.display = "block"; v.src = link; document.getElementById("previewTitle").textContent = "🎬 Direct Video 💖"; document.getElementById("previewMeta").textContent = "Direct File • Ready To Download ⬇️"; document.getElementById("filterRow").style.display = "flex"; renderList(); setStatus("✅ Found 1 Quality! Tap Download! 💖"); btn.disabled = false; btn.textContent = "🔍 Get Qualities 💖"; return; }
+  if(low.includes(".m3u8")){ currentTitle = "HLS_Video"; allFormats = [ { label: "⭐ Best • HLS m3u8 💖", kind: "video", ext: "mp4", url: link, size: 0, note: "HLS Stream", downloadUrl: link }, { label: "📡 HLS • Original Link", kind: "video", ext: "m3u8", url: link, size: 0, note: "m3u8 File", downloadUrl: link } ]; document.getElementById("filterRow").style.display = "flex"; renderList(); setStatus("✅ Found HLS Qualities! Tap Download! 💖"); btn.disabled = false; btn.textContent = "🔍 Get Qualities 💖"; return; }
+  if(low.includes(".mp3") || low.includes(".wav") || low.includes(".ogg") || low.includes(".m4a")){ const ext = low.includes(".wav") ? "wav" : low.includes(".ogg") ? "ogg" : low.includes(".m4a") ? "m4a" : "mp3"; currentTitle = "Audio_File"; allFormats = [{ label: "🎵 Audio • Direct " + ext.toUpperCase() + " 💖", kind: "audio", ext, url: link, size: 0, note: "Direct Audio", downloadUrl: link }]; document.getElementById("filterRow").style.display = "flex"; renderList(); setStatus("✅ Found Audio! Tap Download! 🎵💖"); btn.disabled = false; btn.textContent = "🔍 Get Qualities 💖"; return; }
+  const backend = await tryBackend(link);
+  if(backend){ currentTitle = backend.title || "Pamela_Video"; currentThumb = backend.thumbnail || ""; allFormats = backend.formats; showPreview(backend); document.getElementById("filterRow").style.display = "flex"; renderList(); setStatus("✅ Found " + allFormats.length + " Qualities via yt-dlp! 🔥💖"); btn.disabled = false; btn.textContent = "🔍 Get Qualities 💖"; return; }
+  const vid = getYouTubeId(link);
+  if(vid){ const piped = await tryPipedFormats(vid); if(piped){ currentTitle = piped.title; currentThumb = piped.thumbnail; allFormats = piped.formats; showPreview(piped); document.getElementById("filterRow").style.display = "flex"; renderList(); setStatus("✅ Found " + allFormats.length + " Qualities via Piped! ✨💖"); btn.disabled = false; btn.textContent = "🔍 Get Qualities 💖"; return; } currentTitle = "YouTube_Video"; currentThumb = "https://i.ytimg.com/vi/" + vid + "/hqdefault.jpg"; allFormats = [ { label: "⭐ Best • YouTube Embed Download", kind: "video", ext: "mp4", url: "https://www.youtube.com/watch?v=" + vid, size: 0, note: "Open YouTube", downloadUrl: "https://www.youtube.com/watch?v=" + vid } ]; showPreview({ title: "YouTube Video 💖", thumbnail: currentThumb }); document.getElementById("filterRow").style.display = "flex"; renderList(); setStatus("⚠️ Backend not found! Add yt-dlp Backend for full qualities! 💖"); btn.disabled = false; btn.textContent = "🔍 Get Qualities 💖"; return; }
+  setStatus("⚠️ Could not find qualities! For Facebook / Instagram / TikTok, yt-dlp Backend is needed! 💖"); btn.disabled = false; btn.textContent = "🔍 Get Qualities 💖";
+}
+function showPreview(data){ const box = document.getElementById("preview"); box.style.display = "block"; const img = document.getElementById("previewImg"); const v = document.getElementById("thumbVideo"); v.style.display = "none"; v.src = ""; if(data.thumbnail){ img.style.display = "block"; img.src = data.thumbnail; } else img.style.display = "none"; document.getElementById("previewTitle").textContent = "🎬 " + (data.title || "Video"); document.getElementById("previewMeta").textContent = "✨ " + allFormats.length + " Qualities Found • Pick Your Favourite! 💖"; }
+window.addEventListener("load", ()=>{ const p = new URLSearchParams(location.search); const v = p.get("url") || p.get("v") || p.get("link"); if(v){ document.getElementById("dlLink").value = v; fetchQualities(); } });
+</script>
+</body>
+  </html>
