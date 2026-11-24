@@ -1,0 +1,6 @@
+services:
+    - type: web
+    name: pamela-world
+    env: static
+    buildCommand: ""
+    staticPublishPath: .
